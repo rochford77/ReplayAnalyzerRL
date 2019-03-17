@@ -27,40 +27,31 @@ class Player:
         self.saves = saves
         self.shots = shots
         self.score = score
+        self.games = 1
 
     def look_for_player_index(p):
         index = -100
         for player in Player.raw_players:
-            print("does " + player.id + " = " + p.id + "?")
             if player.id == p.id:
-                print("YES!")
                 index = Player.raw_players.index(player)
-            else:
-                print("no!")
+                break
         return index
 
     def add_player(p):
         if len(Player.raw_players) == 0:
-            print("The list is empty, adding player")
-            print(p.id)
-            print(p.name)
             Player.raw_players.append(p)
         else:
-            print("there are players in the list, checking for doubles")
-            print("searching for player: " + p.name)
-            
             matched_index = Player.look_for_player_index(p)
 
             if(matched_index == -100):
-                print("________________________________________ no match | appending ______________________________________")
                 Player.raw_players.append(p)
             else:
-                print("________________________________________ found match | updating ______________________________________")
                 Player.raw_players[matched_index].goals        = Player.raw_players[matched_index].goals + p.goals
                 Player.raw_players[matched_index].assists      = Player.raw_players[matched_index].assists + p.assists
                 Player.raw_players[matched_index].saves        = Player.raw_players[matched_index].saves + p.saves
                 Player.raw_players[matched_index].goshotsals   = Player.raw_players[matched_index].shots + p.shots
                 Player.raw_players[matched_index].score        = Player.raw_players[matched_index].score + p.score
+                Player.raw_players[matched_index].games        = Player.raw_players[matched_index].games + p.games
 
 
 def build_players(data):
@@ -102,6 +93,11 @@ def start():
             "id: " + str(thePlayer.id)
             + " name: " + str(thePlayer.name)
             + " goals: " + str(thePlayer.goals)
+            + " assists: " + str(thePlayer.assists)
+            + " saves: " + str(thePlayer.saves)
+            + " shots: " + str(thePlayer.shots)
+            + " score: " + str(thePlayer.score)
+            + " games: " + str(thePlayer.games)
         )
 start()
 
