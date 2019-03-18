@@ -140,6 +140,9 @@ class Player:
             if(matched_index == -100):
                 Player.raw_players.append(p)
             else:
+                # Be sure to scroll right here if your window is less than 140 characters wide (like GitHub)
+                # Bad form I guess, but having things lined up is a dream for multi-cursor. Really, game changer.
+
                 Player.raw_players[matched_index].goals                     = Player.raw_players[matched_index].goals                   + p.goals
                 Player.raw_players[matched_index].assists                   = Player.raw_players[matched_index].assists                 + p.assists
                 Player.raw_players[matched_index].saves                     = Player.raw_players[matched_index].saves                   + p.saves
@@ -202,7 +205,10 @@ def build_players(data):
         p_score = player["score"]
         p_isbot = player["isBot"]
 
-        
+        # Carball wont output a key-value pair for something if its value as 0. At least it appears that way
+        # Python will throw a key error if you set something as a node that isnt there
+        # So we check for that before assigning the variable.
+
         if "stats" in player:
             # boost stats
             if "boost" in player["stats"]:
@@ -418,8 +424,6 @@ def build_players(data):
                     p_timeAtBoostSpeed = player["stats"]["speed"]["timeAtBoostSpeed"]
                 else:
                     p_timeAtBoostSpeed = 0.00
-
-
 
         if p_isbot == True:
             print("Robots are taking over!")
