@@ -385,7 +385,7 @@ def build_players(data):
 
             # hit stats
             if "hitCounts" in player["stats"]:
-                if "averageSpeed" in player["stats"]["hitCounts"]:
+                if "totalHits" in player["stats"]["hitCounts"]:
                     p_totalHits = player["stats"]["hitCounts"]["totalHits"]
                 else:
                     p_totalHits = 0
