@@ -10,8 +10,15 @@ This feeds carball in batches of replay files and outputs advanced stats
 Stats are grouped by player and team. 
 
 ### Requirements
-This project requires python 3.6.2 and carball.
+This project requires python 3.6.2, carball, and protobuf.
 
 `pip install carball`
+
+`pip install protobuf`
+
+### Usage
+`import carball`
+
+`from google.protobuf.json_format import MessageToJson`
 
 `python ./replayAnalyzer.py`
