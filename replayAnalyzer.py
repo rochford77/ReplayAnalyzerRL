@@ -27,6 +27,7 @@ class Team:
         self.score = score
         self.name = name
         self.win = win
+        self.games = 1
 
     def look_for_team_index(team_name):
         index = -100
@@ -47,7 +48,7 @@ class Team:
             else:
                 Team.raw_teams[matched_index].score = Team.raw_teams[matched_index].score   + t.score
                 Team.raw_teams[matched_index].win   = Team.raw_teams[matched_index].win     + t.win
-
+                Team.raw_teams[matched_index].games = Team.raw_teams[matched_index].games   + t.games
 
 class Player:
     raw_players = []
@@ -154,7 +155,6 @@ class Player:
         self.timeAtSuperSonic = timeAtSuperSonic
         self.timeAtBoostSpeed = timeAtBoostSpeed
         self.team_name = ""
-
         self.games = 1
 
     def look_for_player_index(player_id):
@@ -169,7 +169,6 @@ class Player:
         matched_index = Player.look_for_player_index(player_id)
         if(matched_index != -100):
             Player.raw_players[matched_index].team_name = team_name
-        
 
     def add_player(p):
         if len(Player.raw_players) == 0:
@@ -664,7 +663,7 @@ def create_player_output(folder_path):
         write_output_file(folder_path + "player_data.csv", player_data, "a")
 
 def create_team_output(folder_path):
-    team_header_data = ("NAME,SCORE,WIN\n")
+    team_header_data = ("NAME,SCORE,WINS,GAMES\n")
 
     write_output_file(folder_path + "team_data.csv", team_header_data, "w+")
 
@@ -672,6 +671,7 @@ def create_team_output(folder_path):
         team_data = (str(theTeam.name)
             + "," + str(theTeam.score)
             + "," + str(theTeam.win)
+            + "," + str(theTeam.games)
             +"\n"
         )
         write_output_file(folder_path + "team_data.csv", team_data, "a")
