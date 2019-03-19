@@ -22,31 +22,11 @@ class Team:
             self,
             score,
             name,
-            possessionTime,
-            turnovers,
-            turnoversOnMyHalf,
-            turnoversOnTheirHalf,
-            wonTurnovers,
-            totalHits,
-            totalPasses,
-            totalShots,
-            totalDribbles,
-            totalDribbleConts,
-            totalAerials,
+            win,
         ):
         self.score = score
         self.name = name
-        self.possessionTime = possessionTime
-        self.turnovers = turnovers
-        self.turnoversOnMyHalf = turnoversOnMyHalf
-        self.turnoversOnTheirHalf = turnoversOnTheirHalf
-        self.wonTurnovers = wonTurnovers
-        self.totalHits = totalHits
-        self.totalPasses = totalPasses
-        self.totalShots = totalShots
-        self.totalDribbles = totalDribbles
-        self.totalDribbleConts = totalDribbleConts
-        self.totalAerials = totalAerials
+        self.win = win
 
     def look_for_team_index(team_name):
         index = -100
@@ -65,21 +45,9 @@ class Team:
             if (matched_index == -100):
                 Team.raw_teams.append(t)
             else:
-                # Be sure to scroll right here if your window is less than 140 characters wide (like GitHub)
-                # Bad form I guess, but having things lined up is a dream for multi-cursor. Really, game changer.
+                Team.raw_teams[matched_index].score = Team.raw_teams[matched_index].score   + t.score
+                Team.raw_teams[matched_index].win   = Team.raw_teams[matched_index].win     + t.win
 
-                Team.raw_teams[matched_index].score                 = Team.raw_teams[matched_index].score                   + t.score
-                Team.raw_teams[matched_index].possessionTime        = Team.raw_teams[matched_index].possessionTime          + t.possessionTime
-                Team.raw_teams[matched_index].turnovers             = Team.raw_teams[matched_index].turnovers               + t.turnovers
-                Team.raw_teams[matched_index].turnoversOnMyHalf     = Team.raw_teams[matched_index].turnoversOnMyHalf       + t.turnoversOnMyHalf
-                Team.raw_teams[matched_index].turnoversOnTheirHalf  = Team.raw_teams[matched_index].turnoversOnTheirHalf    + t.turnoversOnTheirHalf
-                Team.raw_teams[matched_index].wonTurnovers          = Team.raw_teams[matched_index].wonTurnovers            + t.wonTurnovers
-                Team.raw_teams[matched_index].totalHits             = Team.raw_teams[matched_index].totalHits               + t.totalHits
-                Team.raw_teams[matched_index].totalPasses           = Team.raw_teams[matched_index].totalPasses             + t.totalPasses
-                Team.raw_teams[matched_index].totalShots            = Team.raw_teams[matched_index].totalShots              + t.totalShots
-                Team.raw_teams[matched_index].totalDribbles         = Team.raw_teams[matched_index].totalDribbles           + t.totalDribbles
-                Team.raw_teams[matched_index].totalDribbleConts     = Team.raw_teams[matched_index].totalDribbleConts       + t.totalDribbleConts
-                Team.raw_teams[matched_index].totalAerials          = Team.raw_teams[matched_index].totalAerials            + t.totalAerials
 
 class Player:
     raw_players = []
@@ -553,89 +521,48 @@ def build_players(data):
 
             Player.add_player(p)
 
+def update_player_team(player_ids_dict, t_name):
+    for player_id in player_ids_dict:
+        Player.add_team_name(t_name, player_id["id"])
+
 def build_teams(data):
-    for team in data["teams"]:
 
-        # general stats
-        t_playerIds_dict = team["playerIds"]
-        t_score = team["score"]
-        t_name= team["name"]
+    # we know there will always be 2 teams so lets be explicit
+    
+    # general stats
+    t0_player_ids_dict = data["teams"][0]["playerIds"]
+    t0_score = data["teams"][0]["score"]
+    t0_name= data["teams"][0]["name"]
+    t0_win = 0
 
-        for player_id in t_playerIds_dict:
-            Player.add_team_name(t_name, player_id["id"])
+    update_player_team(t0_player_ids_dict, t0_name)
 
-        if "stats" in team:
+    t1_player_ids_dict = data["teams"][1]["playerIds"]
+    t1_score = data["teams"][1]["score"]
+    t1_name= data["teams"][1]["name"]
+    t1_win = 0
 
-            # possession stats
-            if "possession" in team["stats"]:
-                if "possessionTime" in team["stats"]["possession"]: 
-                    t_possessionTime = team["stats"]["possession"]["possessionTime"]
-                else:
-                    t_possessionTime = 0.00
-                if "turnovers" in team["stats"]["possession"]: 
-                    t_turnovers = team["stats"]["possession"]["turnovers"]
-                else:
-                    t_turnovers = 0
-                if "turnoversOnMyHalf" in team["stats"]["possession"]: 
-                    t_turnoversOnMyHalf = team["stats"]["possession"]["turnoversOnMyHalf"]
-                else:
-                    t_possessionTime = 0.00
-                if "turnoversOnTheirHalf" in team["stats"]["possession"]: 
-                    t_turnoversOnTheirHalf = team["stats"]["possession"]["turnoversOnTheirHalf"]
-                else:
-                    t_turnoversOnTheirHalf = 0
-                if "turnoversOnTheirHalf" in team["stats"]["possession"]: 
-                    t_turnoversOnTheirHalf = team["stats"]["possession"]["turnoversOnTheirHalf"]
-                else:
-                    t_turnoversOnTheirHalf = 0
-                if "wonTurnovers" in team["stats"]["possession"]: 
-                    t_wonTurnovers = team["stats"]["possession"]["wonTurnovers"]
-                else:
-                    t_wonTurnovers = 0
+    update_player_team(t1_player_ids_dict, t1_name)
 
-            # possession stats
-            if "hitCounts" in team["stats"]:
-                if "totalHits" in team["stats"]["hitCounts"]: 
-                    t_totalHits = team["stats"]["hitCounts"]["totalHits"]
-                else:
-                    t_totalHits = 0.00
-                if "totalPasses" in team["stats"]["hitCounts"]: 
-                    t_totalPasses = team["stats"]["hitCounts"]["totalPasses"]
-                else:
-                    t_totalPasses = 0
-                if "totalShots" in team["stats"]["hitCounts"]: 
-                    t_totalShots = team["stats"]["hitCounts"]["totalShots"]
-                else:
-                    t_totalShots = 0.00
-                if "turnoversOnTheirHalf" in team["stats"]["hitCounts"]: 
-                    t_totalDribbles = team["stats"]["hitCounts"]["totalDribbles"]
-                else:
-                    t_totalDribbles = 0
-                if "totalDribbleConts" in team["stats"]["hitCounts"]: 
-                    t_totalDribbleConts = team["stats"]["hitCounts"]["totalDribbleConts"]
-                else:
-                    t_totalDribbleConts = 0
-                if "totalAerials" in team["stats"]["hitCounts"]: 
-                    t_totalAerials = team["stats"]["hitCounts"]["totalAerials"]
-                else:
-                    t_totalAerials = 0
-        t = Team(
-            t_score,
-            t_name,
-            t_possessionTime,
-            t_turnovers,
-            t_turnoversOnMyHalf,
-            t_turnoversOnTheirHalf,
-            t_wonTurnovers,
-            t_totalHits,
-            t_totalPasses,
-            t_totalShots,
-            t_totalDribbles,
-            t_totalDribbleConts,
-            t_totalAerials
-        )
+    if t0_score > t1_score:
+        t0_win = 1
+    else:
+        t1_win = 1
 
-        Team.add_team(t)
+    t0 = Team(
+        t0_score,
+        t0_name,
+        t0_win
+    )
+
+    t1 = Team(
+        t1_score,
+        t1_name,
+        t1_win
+    )
+    Team.add_team(t0)
+    Team.add_team(t1)
+
 
 
 def get_files(folder_path):
@@ -737,26 +664,14 @@ def create_player_output(folder_path):
         write_output_file(folder_path + "player_data.csv", player_data, "a")
 
 def create_team_output(folder_path):
-    team_header_data = ("NAME,SCORE,POSSESSION TIME,TURNOVERS,TURNOVERS IN MY HALF,TURNOVERS IN THEIR HALF,"
-        + "WON TURNOVERS,TOTAL HITS,TOTAL PASSES,TOTAL SHOTS,TOTAL DRIBBLES,TOTAL DRIBBLES CONTS,TOTAL AERIALS\n"
-    )
+    team_header_data = ("NAME,SCORE,WIN\n")
 
     write_output_file(folder_path + "team_data.csv", team_header_data, "w+")
 
     for theTeam in Team.raw_teams:
         team_data = (str(theTeam.name)
             + "," + str(theTeam.score)
-            + "," + str(theTeam.possessionTime)
-            + "," + str(theTeam.turnovers)
-            + "," + str(theTeam.turnoversOnMyHalf)
-            + "," + str(theTeam.turnoversOnTheirHalf)
-            + "," + str(theTeam.wonTurnovers)
-            + "," + str(theTeam.totalHits)
-            + "," + str(theTeam.totalPasses)
-            + "," + str(theTeam.totalShots)
-            + "," + str(theTeam.totalDribbles)
-            + "," + str(theTeam.totalDribbleConts)
-            + "," + str(theTeam.totalAerials)
+            + "," + str(theTeam.win)
             +"\n"
         )
         write_output_file(folder_path + "team_data.csv", team_data, "a")
