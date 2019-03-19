@@ -15,6 +15,71 @@ from carball.analysis.analysis_manager import AnalysisManager
 import json
 
 
+class Team:
+    raw_teams = []
+
+    def __init__(
+            self,
+            score,
+            name,
+            possessionTime,
+            turnovers,
+            turnoversOnMyHalf,
+            turnoversOnTheirHalf,
+            wonTurnovers,
+            totalHits,
+            totalPasses,
+            totalShots,
+            totalDribbles,
+            totalDribbleConts,
+            totalAerials,
+        ):
+        self.score = score
+        self.name = name
+        self.possessionTime = possessionTime
+        self.turnovers = turnovers
+        self.turnoversOnMyHalf = turnoversOnMyHalf
+        self.turnoversOnTheirHalf = turnoversOnTheirHalf
+        self.wonTurnovers = wonTurnovers
+        self.totalHits = totalHits
+        self.totalPasses = totalPasses
+        self.totalShots = totalShots
+        self.totalDribbles = totalDribbles
+        self.totalDribbleConts = totalDribbleConts
+        self.totalAerials = totalAerials
+
+    def look_for_team_index(team_name):
+        index = -100
+        for team in Team.raw_teams:
+            if team.name == team_name:
+                index = Team.raw_teams.index(team)
+                break
+        return index
+
+    def add_team(t):
+        if len(Team.raw_teams) == 0:
+            Team.raw_teams.append(t)
+        else:
+            matched_index = Team.look_for_team_index(t.name)
+
+            if (matched_index == -100):
+                Team.raw_teams.append(t)
+            else:
+                # Be sure to scroll right here if your window is less than 140 characters wide (like GitHub)
+                # Bad form I guess, but having things lined up is a dream for multi-cursor. Really, game changer.
+
+                Team.raw_teams[matched_index].score                 = Team.raw_teams[matched_index].score                   + t.score
+                Team.raw_teams[matched_index].possessionTime        = Team.raw_teams[matched_index].possessionTime          + t.possessionTime
+                Team.raw_teams[matched_index].turnovers             = Team.raw_teams[matched_index].turnovers               + t.turnovers
+                Team.raw_teams[matched_index].turnoversOnMyHalf     = Team.raw_teams[matched_index].turnoversOnMyHalf       + t.turnoversOnMyHalf
+                Team.raw_teams[matched_index].turnoversOnTheirHalf  = Team.raw_teams[matched_index].turnoversOnTheirHalf    + t.turnoversOnTheirHalf
+                Team.raw_teams[matched_index].wonTurnovers          = Team.raw_teams[matched_index].wonTurnovers            + t.wonTurnovers
+                Team.raw_teams[matched_index].totalHits             = Team.raw_teams[matched_index].totalHits               + t.totalHits
+                Team.raw_teams[matched_index].totalPasses           = Team.raw_teams[matched_index].totalPasses             + t.totalPasses
+                Team.raw_teams[matched_index].totalShots            = Team.raw_teams[matched_index].totalShots              + t.totalShots
+                Team.raw_teams[matched_index].totalDribbles         = Team.raw_teams[matched_index].totalDribbles           + t.totalDribbles
+                Team.raw_teams[matched_index].totalDribbleConts     = Team.raw_teams[matched_index].totalDribbleConts       + t.totalDribbleConts
+                Team.raw_teams[matched_index].totalAerials          = Team.raw_teams[matched_index].totalAerials            + t.totalAerials
 
 class Player:
     raw_players = []
@@ -120,22 +185,29 @@ class Player:
         self.timeAtSlowSpeed = timeAtSlowSpeed
         self.timeAtSuperSonic = timeAtSuperSonic
         self.timeAtBoostSpeed = timeAtBoostSpeed
+        self.team_name = ""
 
         self.games = 1
 
-    def look_for_player_index(p):
+    def look_for_player_index(player_id):
         index = -100
         for player in Player.raw_players:
-            if player.id == p.id:
+            if player.id == player_id:
                 index = Player.raw_players.index(player)
                 break
         return index
+
+    def add_team_name(team_name, player_id):
+        matched_index = Player.look_for_player_index(player_id)
+        if(matched_index != -100):
+            Player.raw_players[matched_index].team_name = team_name
+        
 
     def add_player(p):
         if len(Player.raw_players) == 0:
             Player.raw_players.append(p)
         else:
-            matched_index = Player.look_for_player_index(p)
+            matched_index = Player.look_for_player_index(p.id)
 
             if(matched_index == -100):
                 Player.raw_players.append(p)
@@ -191,7 +263,6 @@ class Player:
                 Player.raw_players[matched_index].timeAtSlowSpeed           = Player.raw_players[matched_index].timeAtSlowSpeed         + p.timeAtSlowSpeed
                 Player.raw_players[matched_index].timeAtSuperSonic          = Player.raw_players[matched_index].timeAtSuperSonic        + p.timeAtSuperSonic
                 Player.raw_players[matched_index].timeAtBoostSpeed          = Player.raw_players[matched_index].timeAtBoostSpeed        + p.timeAtBoostSpeed
-
 
 def build_players(data):
     for player in data["players"]:
@@ -482,6 +553,91 @@ def build_players(data):
 
             Player.add_player(p)
 
+def build_teams(data):
+    for team in data["teams"]:
+
+        # general stats
+        t_playerIds_dict = team["playerIds"]
+        t_score = team["score"]
+        t_name= team["name"]
+
+        for player_id in t_playerIds_dict:
+            Player.add_team_name(t_name, player_id["id"])
+
+        if "stats" in team:
+
+            # possession stats
+            if "possession" in team["stats"]:
+                if "possessionTime" in team["stats"]["possession"]: 
+                    t_possessionTime = team["stats"]["possession"]["possessionTime"]
+                else:
+                    t_possessionTime = 0.00
+                if "turnovers" in team["stats"]["possession"]: 
+                    t_turnovers = team["stats"]["possession"]["turnovers"]
+                else:
+                    t_turnovers = 0
+                if "turnoversOnMyHalf" in team["stats"]["possession"]: 
+                    t_turnoversOnMyHalf = team["stats"]["possession"]["turnoversOnMyHalf"]
+                else:
+                    t_possessionTime = 0.00
+                if "turnoversOnTheirHalf" in team["stats"]["possession"]: 
+                    t_turnoversOnTheirHalf = team["stats"]["possession"]["turnoversOnTheirHalf"]
+                else:
+                    t_turnoversOnTheirHalf = 0
+                if "turnoversOnTheirHalf" in team["stats"]["possession"]: 
+                    t_turnoversOnTheirHalf = team["stats"]["possession"]["turnoversOnTheirHalf"]
+                else:
+                    t_turnoversOnTheirHalf = 0
+                if "wonTurnovers" in team["stats"]["possession"]: 
+                    t_wonTurnovers = team["stats"]["possession"]["wonTurnovers"]
+                else:
+                    t_wonTurnovers = 0
+
+            # possession stats
+            if "hitCounts" in team["stats"]:
+                if "totalHits" in team["stats"]["hitCounts"]: 
+                    t_totalHits = team["stats"]["hitCounts"]["totalHits"]
+                else:
+                    t_totalHits = 0.00
+                if "totalPasses" in team["stats"]["hitCounts"]: 
+                    t_totalPasses = team["stats"]["hitCounts"]["totalPasses"]
+                else:
+                    t_totalPasses = 0
+                if "totalShots" in team["stats"]["hitCounts"]: 
+                    t_totalShots = team["stats"]["hitCounts"]["totalShots"]
+                else:
+                    t_totalShots = 0.00
+                if "turnoversOnTheirHalf" in team["stats"]["hitCounts"]: 
+                    t_totalDribbles = team["stats"]["hitCounts"]["totalDribbles"]
+                else:
+                    t_totalDribbles = 0
+                if "totalDribbleConts" in team["stats"]["hitCounts"]: 
+                    t_totalDribbleConts = team["stats"]["hitCounts"]["totalDribbleConts"]
+                else:
+                    t_totalDribbleConts = 0
+                if "totalAerials" in team["stats"]["hitCounts"]: 
+                    t_totalAerials = team["stats"]["hitCounts"]["totalAerials"]
+                else:
+                    t_totalAerials = 0
+        t = Team(
+            t_score,
+            t_name,
+            t_possessionTime,
+            t_turnovers,
+            t_turnoversOnMyHalf,
+            t_turnoversOnTheirHalf,
+            t_wonTurnovers,
+            t_totalHits,
+            t_totalPasses,
+            t_totalShots,
+            t_totalDribbles,
+            t_totalDribbleConts,
+            t_totalAerials
+        )
+
+        Team.add_team(t)
+
+
 def get_files(folder_path):
     onlyfiles = [f for f in listdir(folder_path) if isfile(join(folder_path, f))]
     return onlyfiles
@@ -502,18 +658,17 @@ def parse_files(folder_path):
         f.write(raw_json)
         f.close()
         build_players(data)
+        build_teams(data)
 
 
-def write_player_output_file(prefix, data):
-    player_file = open(prefix + "player_data.csv", "a")
+def write_output_file(filename, data, permissions):
+    player_file = open(filename, permissions)
     player_file.write(data)
     player_file.close()
 
-def start():
-    folder_path = "w12y2019"
-    parse_files(folder_path)
 
-    header_data = ("ID,NAME,GOALS,ASSISTS,SAVES,SHOTS,SCORE,GAMES,BOOST USAGE,NUMBER OF SMALL BOOSTS,NUMBER OF LARGE BOOSTS,"
+def create_player_output(folder_path):
+    player_header_data = ("ID,NAME,TEAM,GOALS,ASSISTS,SAVES,SHOTS,SCORE,GAMES,BOOST USAGE,NUMBER OF SMALL BOOSTS,NUMBER OF LARGE BOOSTS,"
         + "WASTED COLLECTION,WASTED USAGE,TIME FULL BOOST,TIME LOW BOOST,TIME NO BOOST,STOLEN BOOSTS,AVERAGE BOOST LVL,"
         + "BALL HIT FORWARD,T NEAREST BALL,T FURTHEST BALL,POSSESSION T,TURNOVERS,TURNOVERS MY HALF,TURNOVERS THEIR HALF,"
         + "WON TURNOVERS,T ON GROUND,T LOW AIR,T HIGH AIR,T DEFENDING HALF,T ATTACKING HALF,T DEFENDING THIRD,"
@@ -522,12 +677,13 @@ def start():
         + "T AT SLOW SPEED,T AT SUPERSONIC,T AT BOOST SPEED\n"
     )
 
-    write_player_output_file(folder_path, header_data)
+    write_output_file(folder_path + "player_data.csv", player_header_data, "w+")
 
-    
     for thePlayer in Player.raw_players:
+        
         player_data = (str(thePlayer.id)
             + "," + str(thePlayer.name)
+            + "," + str(thePlayer.team_name)
             + "," + str(thePlayer.goals)
             + "," + str(thePlayer.assists)
             + "," + str(thePlayer.saves)
@@ -578,8 +734,41 @@ def start():
             + "," + str(thePlayer.timeAtBoostSpeed)
             +"\n"
         )
-        write_player_output_file(folder_path, player_data)
-start()
+        write_output_file(folder_path + "player_data.csv", player_data, "a")
+
+def create_team_output(folder_path):
+    team_header_data = ("NAME,SCORE,POSSESSION TIME,TURNOVERS,TURNOVERS IN MY HALF,TURNOVERS IN THEIR HALF,"
+        + "WON TURNOVERS,TOTAL HITS,TOTAL PASSES,TOTAL SHOTS,TOTAL DRIBBLES,TOTAL DRIBBLES CONTS,TOTAL AERIALS\n"
+    )
+
+    write_output_file(folder_path + "team_data.csv", team_header_data, "w+")
+
+    for theTeam in Team.raw_teams:
+        team_data = (str(theTeam.name)
+            + "," + str(theTeam.score)
+            + "," + str(theTeam.possessionTime)
+            + "," + str(theTeam.turnovers)
+            + "," + str(theTeam.turnoversOnMyHalf)
+            + "," + str(theTeam.turnoversOnTheirHalf)
+            + "," + str(theTeam.wonTurnovers)
+            + "," + str(theTeam.totalHits)
+            + "," + str(theTeam.totalPasses)
+            + "," + str(theTeam.totalShots)
+            + "," + str(theTeam.totalDribbles)
+            + "," + str(theTeam.totalDribbleConts)
+            + "," + str(theTeam.totalAerials)
+            +"\n"
+        )
+        write_output_file(folder_path + "team_data.csv", team_data, "a")
+
+def start():
+    folder_path = "w12y2019"
+    parse_files(folder_path)
+    create_player_output(folder_path)
+    create_team_output(folder_path)
+
+if __name__ == "__main__":
+    start()
 
 
 
