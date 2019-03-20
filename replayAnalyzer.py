@@ -230,6 +230,7 @@ class Player:
                 Player.raw_players[matched_index].timeAtBoostSpeed          = Player.raw_players[matched_index].timeAtBoostSpeed        + p.timeAtBoostSpeed
 
 def build_players(data):
+
     for player in data["players"]:
         # general stats
         p_id = player["id"]["id"]
@@ -241,225 +242,219 @@ def build_players(data):
         p_score = player["score"]
         p_isbot = player["isBot"]
 
-        # Carball wont output a key-value pair for something if its value as 0. At least it appears that way
+        # (Verified by guys at SaltieRL/Claculated.gg/makers of carball)
+        # Carball wont output a key-value pair for something if its value as 0. 
         # Python will throw a key error if you set something as a node that isnt there
-        # So we check for that before assigning the variable.
+        # must handle the errors
 
-        if "stats" in player:
-            # boost stats
-            if "boost" in player["stats"]:
-                if "boostUsage" in player["stats"]["boost"]: 
-                    p_boostUseage = player["stats"]["boost"]["boostUsage"]
-                else:
-                    p_boostUseage = 0.00
-                if "numSmallBoosts" in player["stats"]["boost"]:
-                    p_numSmallBoosts = player["stats"]["boost"]["numSmallBoosts"]
-                else:
-                    p_numSmallBoosts = 0
+        # Boost Stats
+        try:
+            p_boostUseage = player["stats"]["boost"]["boostUsage"]
+        except KeyError:
+            p_boostUseage = 0.00
 
-                if "numLargeBoosts" in player["stats"]["boost"]:
-                    p_numLargeBoosts = player["stats"]["boost"]["numLargeBoosts"]
-                else:
-                    p_numLargeBoosts = 0 
+        try:
+            p_numSmallBoosts = player["stats"]["boost"]["numSmallBoosts"]
+        except KeyError:
+            p_numSmallBoosts = 0
 
-                if "wastedCollection" in player["stats"]["boost"]:
-                    p_wastedCollection = player["stats"]["boost"]["wastedCollection"]
-                else:
-                    p_wastedCollection = 0.00
+        try:
+            p_numLargeBoosts = player["stats"]["boost"]["numLargeBoosts"]
+        except KeyError:
+            p_numLargeBoosts = 0 
 
-                if "wastedUsage" in player["stats"]["boost"]:
-                    p_wastedUsage = player["stats"]["boost"]["wastedUsage"]
-                else:
-                    p_wastedUsage  = 0.00
+        try:
+            p_wastedCollection = player["stats"]["boost"]["wastedCollection"]
+        except KeyError:
+            p_wastedCollection = 0.00
 
-                if "timeFullBoost" in player["stats"]["boost"]:
-                    p_timeFullBoost = player["stats"]["boost"]["timeFullBoost"]
-                else:
-                    p_timeFullBoost  = 0.00
+        try:
+            p_wastedUsage = player["stats"]["boost"]["wastedUsage"]
+        except KeyError:
+            p_wastedUsage  = 0.00
 
-                if "timeLowBoost" in player["stats"]["boost"]:
-                    p_timeLowBoost = player["stats"]["boost"]["timeLowBoost"]
-                else:
-                    p_timeLowBoost = 0.00
+        try:
+            p_timeFullBoost = player["stats"]["boost"]["timeFullBoost"]
+        except KeyError:
+            p_timeFullBoost  = 0.00
 
-                if "timeNoBoost" in player["stats"]["boost"]:
-                    p_timeNoBoost = player["stats"]["boost"]["timeNoBoost"]
-                else:
-                    p_timeNoBoost = 0.00
+        try:
+            p_timeLowBoost = player["stats"]["boost"]["timeLowBoost"]
+        except KeyError:
+            p_timeLowBoost = 0.00
 
-                if "numStolenBoosts" in player["stats"]["boost"]:
-                    p_numStolenBoosts = player["stats"]["boost"]["numStolenBoosts"]
-                else:
-                    p_numStolenBoosts = 0
+        try:
+            p_timeNoBoost = player["stats"]["boost"]["timeNoBoost"]
+        except KeyError:
+            p_timeNoBoost = 0.00
 
-                if "averageBoostLevel" in player["stats"]["boost"]:
-                    p_averageBoostLevel = player["stats"]["boost"]["averageBoostLevel"]
-                else:
-                    p_averageBoostLevel = 0.00
+        try:
+            p_numStolenBoosts = player["stats"]["boost"]["numStolenBoosts"]
+        except KeyError:
+            p_numStolenBoosts = 0
 
-            # distance stats
-            if "distance" in player["stats"]:
-                if "ballHitForward" in player["stats"]["distance"]:
-                    p_ballHitForward = player["stats"]["distance"]["ballHitForward"]
-                else:
-                    p_ballHitForward  = 0.00
+        try:
+            p_averageBoostLevel = player["stats"]["boost"]["averageBoostLevel"]
+        except KeyError:
+            p_averageBoostLevel = 0.00
 
-                if "timeClosestToBall" in player["stats"]["distance"]:
-                    p_timeClosestToBall = player["stats"]["distance"]["timeClosestToBall"]
-                else:
-                    p_timeClosestToBall = 0.00
+        # Distance Stats
+        try:
+            p_ballHitForward = player["stats"]["distance"]["ballHitForward"]
+        except KeyError:
+            p_ballHitForward  = 0.00
 
-                if "timeFurthestFromBall" in player["stats"]["distance"]:
-                    p_timeFurthestFromBall = player["stats"]["distance"]["timeFurthestFromBall"]
-                else:
-                    p_timeFurthestFromBall = 0.00
+        try:
+            p_timeClosestToBall = player["stats"]["distance"]["timeClosestToBall"]
+        except KeyError:
+            p_timeClosestToBall = 0.00
 
+        try:
+            p_timeFurthestFromBall = player["stats"]["distance"]["timeFurthestFromBall"]
+        except KeyError:
+            p_timeFurthestFromBall = 0.00
 
-            # possession stats
-            if "possession" in player["stats"]:
-                if "possessionTime" in player["stats"]["possession"]:
-                    p_possessionTime = player["stats"]["possession"]["possessionTime"]
-                else:
-                    p_possessionTime = 0.00
+        # Possession Stats
+        try:
+            p_possessionTime = player["stats"]["possession"]["possessionTime"]
+        except KeyError:
+            p_possessionTime = 0.00
 
-                if "turnovers" in player["stats"]["possession"]:
-                    p_turnovers = player["stats"]["possession"]["turnovers"]
-                else:
-                    p_turnovers = 0
+        try:
+            p_turnovers = player["stats"]["possession"]["turnovers"]
+        except KeyError:
+            p_turnovers = 0
 
-                if "turnoversOnMyHalf" in player["stats"]["possession"]:
-                    p_turnoversOnMyHalf = player["stats"]["possession"]["turnoversOnMyHalf"]
-                else:
-                    p_turnoversOnMyHalf = 0
+        try:
+            p_turnoversOnMyHalf = player["stats"]["possession"]["turnoversOnMyHalf"]
+        except KeyError:
+            p_turnoversOnMyHalf = 0
 
-                if "turnoversOnTheirHalf" in player["stats"]["possession"]:
-                    p_turnoversOnTheirHalf = player["stats"]["possession"]["turnoversOnTheirHalf"]
-                else:
-                    p_turnoversOnTheirHalf = 0
+        try:
+            p_turnoversOnTheirHalf = player["stats"]["possession"]["turnoversOnTheirHalf"]
+        except KeyError:
+            p_turnoversOnTheirHalf = 0
 
-                if "wonTurnovers" in player["stats"]["possession"]:
-                    p_wonTurnovers = player["stats"]["possession"]["wonTurnovers"]
-                else:
-                    p_wonTurnovers = 0
+        try:
+            p_wonTurnovers = player["stats"]["possession"]["wonTurnovers"]
+        except KeyError:
+            p_wonTurnovers = 0
 
-            # positionalTendencies stats
-            if "positionalTendencies" in player["stats"]:
-                if "timeOnGround" in player["stats"]["positionalTendencies"]:
-                    p_timeOnGround = player["stats"]["positionalTendencies"]["timeOnGround"]
-                else:
-                    p_timeOnGround  = 0.00
+        # Positional Stats
+        try:
+            p_timeOnGround = player["stats"]["positionalTendencies"]["timeOnGround"]
+        except KeyError:
+            p_timeOnGround  = 0.00
 
-                if "timeLowInAir" in player["stats"]["positionalTendencies"]:
-                    p_timeLowInAir = player["stats"]["positionalTendencies"]["timeLowInAir"]
-                else:
-                    p_timeLowInAir  = 0.00
+        try:
+            p_timeLowInAir = player["stats"]["positionalTendencies"]["timeLowInAir"]
+        except KeyError:
+            p_timeLowInAir  = 0.00
 
-                if "timeHighInAir" in player["stats"]["positionalTendencies"]:
-                    p_timeHighInAir = player["stats"]["positionalTendencies"]["timeHighInAir"]
-                else:
-                    p_timeHighInAir = 0.00
+        try:
+            p_timeHighInAir = player["stats"]["positionalTendencies"]["timeHighInAir"]
+        except KeyError:
+            p_timeHighInAir = 0.00
 
-                if "timeInDefendingHalf" in player["stats"]["positionalTendencies"]:
-                    p_timeInDefendingHalf = player["stats"]["positionalTendencies"]["timeInDefendingHalf"]
-                else:
-                    p_timeInDefendingHalf = 0.00
+        try:
+            p_timeInDefendingHalf = player["stats"]["positionalTendencies"]["timeInDefendingHalf"]
+        except KeyError:
+            p_timeInDefendingHalf = 0.00
 
-                if "timeInAttackingHalf" in player["stats"]["positionalTendencies"]:
-                    p_timeInAttackingHalf = player["stats"]["positionalTendencies"]["timeInAttackingHalf"]
-                else:
-                    p_timeInAttackingHalf = 0.00
+        try:
+            p_timeInAttackingHalf = player["stats"]["positionalTendencies"]["timeInAttackingHalf"]
+        except KeyError:
+            p_timeInAttackingHalf = 0.00
 
-                if "timeInDefendingThird" in player["stats"]["positionalTendencies"]:
-                    p_timeInDefendingThird = player["stats"]["positionalTendencies"]["timeInDefendingThird"]
-                else:
-                    p_timeInDefendingThird = 0.00
+        try:
+            p_timeInDefendingThird = player["stats"]["positionalTendencies"]["timeInDefendingThird"]
+        except KeyError:
+            p_timeInDefendingThird = 0.00
 
-                if "timeInNeutralThird" in player["stats"]["positionalTendencies"]:
-                    p_timeInNeutralThird = player["stats"]["positionalTendencies"]["timeInNeutralThird"]
-                else:
-                    p_timeInNeutralThird = 0.00
+        try:
+            p_timeInNeutralThird = player["stats"]["positionalTendencies"]["timeInNeutralThird"]
+        except KeyError:
+            p_timeInNeutralThird = 0.00
 
-                if "timeInAttackingThird" in player["stats"]["positionalTendencies"]:
-                    p_timeInAttackingThird = player["stats"]["positionalTendencies"]["timeInAttackingThird"]
-                else:
-                    p_timeInAttackingThird = 0.00
+        try:
+            p_timeInAttackingThird = player["stats"]["positionalTendencies"]["timeInAttackingThird"]
+        except KeyError:
+            p_timeInAttackingThird = 0.00
 
-                if "timeBehindBall" in player["stats"]["positionalTendencies"]:
-                    p_timeBehindBall = player["stats"]["positionalTendencies"]["timeBehindBall"]
-                else:
-                    p_timeBehindBall = 0.00
+        try:
+            p_timeBehindBall = player["stats"]["positionalTendencies"]["timeBehindBall"]
+        except KeyError:
+            p_timeBehindBall = 0.00
 
-                if "timeInFrontBall" in player["stats"]["positionalTendencies"]:
-                    p_timeInFrontBall = player["stats"]["positionalTendencies"]["timeInFrontBall"]
-                else:
-                    p_timeInFrontBall = 0.00
+        try:
+            p_timeInFrontBall = player["stats"]["positionalTendencies"]["timeInFrontBall"]
+        except KeyError:
+            p_timeInFrontBall = 0.00
 
-                if "timeNearWall" in player["stats"]["positionalTendencies"]:
-                    p_timeNearWall = player["stats"]["positionalTendencies"]["timeNearWall"]
-                else:
-                    p_timeNearWall = 0.00
+        try:
+            p_timeNearWall = player["stats"]["positionalTendencies"]["timeNearWall"]
+        except KeyError:
+            p_timeNearWall = 0.00
 
-                if "timeInCorner" in player["stats"]["positionalTendencies"]:
-                    p_timeInCorner = player["stats"]["positionalTendencies"]["timeInCorner"]
-                else:
-                    p_timeInCorner = 0.00
-                    
-            # average stats
-            if "averages" in player["stats"]:
-                if "averageSpeed" in player["stats"]["averages"]:
-                    p_averageSpeed = player["stats"]["averages"]["averageSpeed"]
-                else:
-                    p_averageSpeed = 0.00
-                if "averageHitDistance" in player["stats"]["averages"]:
-                    p_averageHitDistance = player["stats"]["averages"]["averageHitDistance"]
-                else:
-                    p_averageHitDistance = 0.00
-                if "averageDistanceFromCenter" in player["stats"]["averages"]:
-                    p_averageDistanceFromCenter = player["stats"]["averages"]["averageDistanceFromCenter"]
-                else:
-                    p_averageDistanceFromCenter = 0.00
+        try:
+            p_timeInCorner = player["stats"]["positionalTendencies"]["timeInCorner"]
+        except KeyError:
+            p_timeInCorner = 0.00
 
-            # hit stats
-            if "hitCounts" in player["stats"]:
-                if "totalHits" in player["stats"]["hitCounts"]:
-                    p_totalHits = player["stats"]["hitCounts"]["totalHits"]
-                else:
-                    p_totalHits = 0
-                if "totalPasses" in player["stats"]["hitCounts"]:
-                    p_totalPasses = player["stats"]["hitCounts"]["totalPasses"]
-                else:
-                    p_totalPasses = 0
-                if "totalShots" in player["stats"]["hitCounts"]:
-                    p_totalShots = player["stats"]["hitCounts"]["totalShots"]
-                else:
-                    p_totalShots = 0
-                if "totalDribbles" in player["stats"]["hitCounts"]:
-                    p_totalDribbles = player["stats"]["hitCounts"]["totalDribbles"]
-                else:
-                    p_totalDribbles = 0
-                if "totalDribbleConts" in player["stats"]["hitCounts"]:
-                    p_totalDribbleConts = player["stats"]["hitCounts"]["totalDribbleConts"]
-                else:
-                    p_totalDribbleConts = 0
-                if "totalAerials" in player["stats"]["hitCounts"]:
-                    p_totalAerials = player["stats"]["hitCounts"]["totalAerials"]
-                else:
-                    p_totalAerials = 0
-            # speed
-            if "speed" in player["stats"]:
-                if "timeAtSlowSpeed" in player["stats"]["speed"]:
-                    p_timeAtSlowSpeed = player["stats"]["speed"]["timeAtSlowSpeed"]
-                else:
-                    p_timeAtSlowSpeed = 0.00
+        # average stats
+        try:
+            p_averageSpeed = player["stats"]["averages"]["averageSpeed"]
+        except KeyError:
+            p_averageSpeed = 0.00
+        try:
+            p_averageHitDistance = player["stats"]["averages"]["averageHitDistance"]
+        except KeyError:
+            p_averageHitDistance = 0.00
+        try:
+            p_averageDistanceFromCenter = player["stats"]["averages"]["averageDistanceFromCenter"]
+        except KeyError:
+            p_averageDistanceFromCenter = 0.00
 
-                if "timeAtSuperSonic" in player["stats"]["speed"]:
-                    p_timeAtSuperSonic = player["stats"]["speed"]["timeAtSuperSonic"]
-                else:
-                    p_timeAtSuperSonic = 0.00
-                if "timeAtBoostSpeed" in player["stats"]["speed"]:
-                    p_timeAtBoostSpeed = player["stats"]["speed"]["timeAtBoostSpeed"]
-                else:
-                    p_timeAtBoostSpeed = 0.00
+        # hit stats
+        try:
+            p_totalHits = player["stats"]["hitCounts"]["totalHits"]
+        except KeyError:
+            p_totalHits = 0
+        try:
+            p_totalPasses = player["stats"]["hitCounts"]["totalPasses"]
+        except KeyError:
+            p_totalPasses = 0
+        try:
+            p_totalShots = player["stats"]["hitCounts"]["totalShots"]
+        except KeyError:
+            p_totalShots = 0
+        try:
+            p_totalDribbles = player["stats"]["hitCounts"]["totalDribbles"]
+        except KeyError:
+            p_totalDribbles = 0
+        try:
+            p_totalDribbleConts = player["stats"]["hitCounts"]["totalDribbleConts"]
+        except KeyError:
+            p_totalDribbleConts = 0
+        try:
+            p_totalAerials = player["stats"]["hitCounts"]["totalAerials"]
+        except KeyError:
+            p_totalAerials = 0
+
+         # speed
+        try:
+            p_timeAtSlowSpeed = player["stats"]["speed"]["timeAtSlowSpeed"]
+        except KeyError:
+            p_timeAtSlowSpeed = 0.00
+
+        try:
+            p_timeAtSuperSonic = player["stats"]["speed"]["timeAtSuperSonic"]
+        except KeyError:
+            p_timeAtSuperSonic = 0.00
+        try:
+            p_timeAtBoostSpeed = player["stats"]["speed"]["timeAtBoostSpeed"]
+        except KeyError:
+            p_timeAtBoostSpeed = 0.00
 
         if p_isbot == True:
             print("Robots are taking over!")
@@ -541,6 +536,7 @@ def build_teams(data):
 
     update_player_team(t1_player_ids_dict, t1_name)
 
+    # TODO need to update player wins somewhere around here.
     if t0_score > t1_score:
         t0_win = 1
     else:
@@ -559,8 +555,6 @@ def build_teams(data):
     )
     Team.add_team(t0)
     Team.add_team(t1)
-
-
 
 def get_files(folder_path):
     onlyfiles = [f for f in listdir(folder_path) if isfile(join(folder_path, f))]
@@ -688,7 +682,7 @@ def main():
     # Add more options if you like
     parser.add_argument("-f", "--folder", dest="folder_path",
                         help="please enter --folder pathToFolder", required=True)
-                        
+
     parser.add_argument("-q", "--spell", dest="spell_check",
                         help="enter Y or N for spell check", default="Y")
 
