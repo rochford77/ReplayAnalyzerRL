@@ -10,19 +10,24 @@
 
 + wrapper for [carball](https://github.com/SaltieRL/carball) 
 + This feeds carball in batches of replay files and outputs advanced stats 
-+Stats are grouped by player and team. 
++ Stats are grouped by player and team. 
 
 ### Requirements
 
-+ This project requires python 3.6.2, carball, and protobuf.
++ [python 3.6.2](https://www.python.org/downloads/release/python-362/)
++ [carball](https://github.com/SaltieRL/carball) 
++ [protobuf](https://developers.google.com/protocol-buffers/)
++ [PySpellChecker](https://pypi.org/project/pyspellchecker/)
 
 `pip install carball`
 
 `pip install protobuf`
+
+`pip install pyspellchecker`
 
 ### Usage
 `import carball`
 
 `from google.protobuf.json_format import MessageToJson`
 
-`python ./replayAnalyzer.py`
+`python ./replayAnalyzer.py -f folder_path -s Y/N`

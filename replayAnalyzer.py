@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 
-import carball
-import os
+import sys, argparse, json, os, carball
 from os import listdir
 from os.path import isfile, join
 from google.protobuf import descriptor as _descriptor
@@ -12,8 +11,7 @@ from google.protobuf import descriptor_pb2
 from google.protobuf.json_format import MessageToJson
 from carball.json_parser.game import Game
 from carball.analysis.analysis_manager import AnalysisManager
-import json
-
+from spellchecker import SpellChecker
 
 class Team:
     raw_teams = []
@@ -676,14 +674,32 @@ def create_team_output(folder_path):
         )
         write_output_file(folder_path + "team_data.csv", team_data, "a")
 
-def start():
-    folder_path = "w12y2019"
-    parse_files(folder_path)
-    create_player_output(folder_path)
-    create_team_output(folder_path)
+def main():
+    # folder_path = ""
+    # spell_check = ""
+    # arg_parser = argparse.ArgumentParser(description="foo")
+
+    # arg_parser.add_argument("-p", "--folder_path", required=True)
+    # arg_parser.add_argument("-s", "--spell_check_enabled", default = "y")
+    # # folder_path = arg_parser.parse_args(["--folder_path"])
+    # spell_check = arg_parser.parse_args(["--spell_check_enabled"])
+    parser = argparse.ArgumentParser()
+
+    # Add more options if you like
+    parser.add_argument("-f", "--folder", dest="folder_path",
+                        help="please enter --folder pathToFolder", required=True)
+                        
+    parser.add_argument("-q", "--spell", dest="spell_check",
+                        help="enter Y or N for spell check", default="Y")
+
+    args = parser.parse_args()
+
+    parse_files(args.folder_path)
+    create_player_output(args.folder_path)
+    create_team_output(args.folder_path)
 
 if __name__ == "__main__":
-    start()
+    main()
 
 
 
