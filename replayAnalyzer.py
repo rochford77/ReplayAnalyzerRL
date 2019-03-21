@@ -168,6 +168,11 @@ class Player:
         if(matched_index != -100):
             Player.raw_players[matched_index].team_name = team_name
 
+    def get_player_name_by_id(player_id):
+        for player in Player.raw_players:
+            if player.id == player_id:
+                return player.name
+
     def add_player(p):
         if len(Player.raw_players) == 0:
             Player.raw_players.append(p)
@@ -517,6 +522,18 @@ def update_player_team(player_ids_dict, t_name):
     for player_id in player_ids_dict:
         Player.add_team_name(t_name, player_id["id"])
 
+def avoid_default_names(player_ids_dict):
+    team_name = ""
+    playerarr = []
+    for player_id in player_ids_dict:
+        playerarr.append(Player.get_player_name_by_id(player_id["id"]))
+    playerarr.sort()
+    team_name = "_".join(playerarr)
+
+
+    return team_name
+
+
 def check_name(t_name, spell_check):
     # credit goes to Jordak for the idea <3
 
@@ -545,20 +562,26 @@ def check_name(t_name, spell_check):
 
 def build_teams(data, spell_check):
 
-    # we know there will always be 2 teams so lets be explicit
-
     # general stats
     t0_player_ids_dict = data["teams"][0]["playerIds"]
     t0_score = data["teams"][0]["score"]
-    t0_name= check_name(data["teams"][0]["name"], spell_check)
     t0_win = 0
+    # orange blue does not appear to get a node if names are not custom
+    try:
+        t0_name = check_name(data["teams"][0]["name"], spell_check)
+    except KeyError:
+        t0_name = avoid_default_names(t0_player_ids_dict)
 
     update_player_team(t0_player_ids_dict, t0_name)
 
     t1_player_ids_dict = data["teams"][1]["playerIds"]
     t1_score = data["teams"][1]["score"]
-    t1_name= check_name(data["teams"][1]["name"], spell_check)
     t1_win = 0
+    try:
+        t1_name = check_name(data["teams"][1]["name"], spell_check)
+    except KeyError:
+        t1_name = avoid_default_names(t0_player_ids_dict)
+    
 
     update_player_team(t1_player_ids_dict, t1_name)
 

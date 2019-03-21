@@ -14,18 +14,8 @@
 + [protobuf](https://developers.google.com/protocol-buffers/)
 + [PySpellChecker](https://pypi.org/project/pyspellchecker/)
 
-`pip install carball`
-
-`pip install protobuf`
-
-`pip install pyspellchecker`
 
 ### Usage
-`import carball`
-
-`from google.protobuf.json_format import MessageToJson`
-
-`from spellchecker import SpellChecker`
 
 `python ./replayAnalyzer.py -f folder_path -s Y/N`
 
