@@ -154,6 +154,7 @@ class Player:
         self.timeAtBoostSpeed = timeAtBoostSpeed
         self.team_name = ""
         self.games = 1
+        self.wins = 0
 
     def look_for_player_index(player_id):
         index = -100
@@ -162,6 +163,11 @@ class Player:
                 index = Player.raw_players.index(player)
                 break
         return index
+
+    def add_player_win(player_id):
+        matched_index = Player.look_for_player_index(player_id)
+        if(matched_index != -100):
+            Player.raw_players[matched_index].wins = Player.raw_players[matched_index].wins + 1
 
     def add_team_name(team_name, player_id):
         matched_index = Player.look_for_player_index(player_id)
@@ -522,6 +528,11 @@ def update_player_team(player_ids_dict, t_name):
     for player_id in player_ids_dict:
         Player.add_team_name(t_name, player_id["id"])
 
+def update_player_wins(player_ids_dict):
+    for player_id in player_ids_dict:
+        Player.add_player_win(player_id["id"])
+
+
 def avoid_default_names(player_ids_dict):
     team_name = ""
     playerarr = []
@@ -566,6 +577,7 @@ def build_teams(data, spell_check):
     t0_player_ids_dict = data["teams"][0]["playerIds"]
     t0_score = data["teams"][0]["score"]
     t0_win = 0
+    
     # orange blue does not appear to get a node if names are not custom
     try:
         t0_name = check_name(data["teams"][0]["name"], spell_check)
@@ -577,19 +589,21 @@ def build_teams(data, spell_check):
     t1_player_ids_dict = data["teams"][1]["playerIds"]
     t1_score = data["teams"][1]["score"]
     t1_win = 0
+
+    # orange blue does not appear to get a node if names are not custom
     try:
         t1_name = check_name(data["teams"][1]["name"], spell_check)
     except KeyError:
         t1_name = avoid_default_names(t0_player_ids_dict)
-    
 
     update_player_team(t1_player_ids_dict, t1_name)
 
-    # TODO need to update player wins somewhere around here.
     if t0_score > t1_score:
         t0_win = 1
-    else:
+        update_player_wins(t0_player_ids_dict)
+    elif t0_score < t1_score:
         t1_win = 1
+        update_player_wins(t1_player_ids_dict)
 
     t0 = Team(
         t0_score,
@@ -635,13 +649,13 @@ def write_output_file(filename, data, permissions):
 
 
 def create_player_output(folder_path):
-    player_header_data = ("ID,NAME,TEAM,GOALS,ASSISTS,SAVES,SHOTS,SCORE,GAMES,BOOST USAGE,NUMBER OF SMALL BOOSTS,NUMBER OF LARGE BOOSTS,"
-        + "WASTED COLLECTION,WASTED USAGE,TIME FULL BOOST,TIME LOW BOOST,TIME NO BOOST,STOLEN BOOSTS,AVERAGE BOOST LVL,"
-        + "BALL HIT FORWARD,T NEAREST BALL,T FURTHEST BALL,POSSESSION T,TURNOVERS,TURNOVERS MY HALF,TURNOVERS THEIR HALF,"
-        + "WON TURNOVERS,T ON GROUND,T LOW AIR,T HIGH AIR,T DEFENDING HALF,T ATTACKING HALF,T DEFENDING THIRD,"
-        + "T NEUTRAL THIRD,T ATTACKING THIRD,T BEHIND BALL,T FRONT BALL,T NEAR WALL,T CORNER,AVG SPEED,AVG HIT DISTANCE,"
-        + "AVG DISTANCE FROM CENTER,TOTAL HITS,TOTAL PASSES,TOTAL SHOTS,TOTAL DRIBBLES,TOTAL DTIBBLE CONTS,TOTAL AERIALS,"
-        + "T AT SLOW SPEED,T AT SUPERSONIC,T AT BOOST SPEED\n"
+    player_header_data = ("ID,NAME,TEAM,GOALS,ASSISTS,SAVES,SHOTS,SCORE,GAMES,WINS,BOOST USAGE,NUMBER OF SMALL BOOSTS,"
+        + "NUMBER OF LARGE BOOSTS,WASTED COLLECTION,WASTED USAGE,TIME FULL BOOST,TIME LOW BOOST,TIME NO BOOST,STOLEN BOOSTS,"
+        + "AVERAGE BOOST LVL,BALL HIT FORWARD,T NEAREST BALL,T FURTHEST BALL,POSSESSION T,TURNOVERS,TURNOVERS MY HALF,"
+        + "TURNOVERS THEIR HALF,WON TURNOVERS,T ON GROUND,T LOW AIR,T HIGH AIR,T DEFENDING HALF,T ATTACKING HALF,"
+        + "T DEFENDING THIRD,T NEUTRAL THIRD,T ATTACKING THIRD,T BEHIND BALL,T FRONT BALL,T NEAR WALL,T CORNER,AVG SPEED,"
+        + "AVG HIT DISTANCE,AVG DISTANCE FROM CENTER,TOTAL HITS,TOTAL PASSES,TOTAL SHOTS,TOTAL DRIBBLES,TOTAL DTIBBLE CONTS,"
+        + "TOTAL AERIALS,T AT SLOW SPEED,T AT SUPERSONIC,T AT BOOST SPEED\n"
     )
 
     write_output_file(folder_path + "player_data.csv", player_header_data, "w+")
@@ -657,6 +671,7 @@ def create_player_output(folder_path):
             + "," + str(thePlayer.shots)
             + "," + str(thePlayer.score)
             + "," + str(thePlayer.games)
+            + "," + str(thePlayer.wins)
             + "," + str(thePlayer.boostUseage)
             + "," + str(thePlayer.numSmallBoosts)
             + "," + str(thePlayer.numLargeBoosts)
