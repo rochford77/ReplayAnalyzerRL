@@ -12,16 +12,41 @@ from google.protobuf.json_format import MessageToJson
 from carball.json_parser.game import Game
 from carball.analysis.analysis_manager import AnalysisManager
 from spellchecker import SpellChecker
+class Match:
+    raw_matches = []
+
+    def __init__(self, map, time, guid, playlist):
+        self.map = map
+        self.time = time
+        self.guid = guid
+        self.playlist = playlist
+
+    def look_for_match_index(match_guid):
+        index = -100
+        for match in Match.raw_matches:
+            if match.guid == match_guid:
+                index = Match.raw_matches.index(match)
+                break
+        return index
+
+    def add_match(m):
+        if len(Match.raw_matches) == 0:
+            Match.raw_matches.append(m)
+        else:
+            matched_index = Match.look_for_match_index(m.guid)
+
+            if (matched_index == -100):
+                Match.raw_matches.append(m)
+
+    def get_match(guid):
+        index = Match.look_for_match_index(guid)
+        return Match.raw_matches[index]
+
 
 class Team:
     raw_teams = []
 
-    def __init__(
-            self,
-            score,
-            name,
-            win,
-        ):
+    def __init__(self, score, name, win):
         self.score = score
         self.name = name
         self.win = win
@@ -243,20 +268,47 @@ class Player:
 def build_players(data):
 
     for player in data["players"]:
+
         # general stats
         p_id = player["id"]["id"]
         p_name = player["name"]
-        p_goals = player["goals"]
-        p_assists = player["assists"]
-        p_saves = player["saves"]
-        p_shots = player["shots"]
-        p_score = player["score"]
-        p_isbot = player["isBot"]
 
         # (Verified by guys at SaltieRL/Claculated.gg/makers of carball)
         # Carball wont output a key-value pair for something if its value as 0. 
         # Python will throw a key error if you set something as a node that isnt there
         # must handle the errors
+
+        # Primary stats
+        
+        try:
+            p_isbot = player["isBot"]
+        except KeyError:
+            p_isbot = False
+
+        try:
+            p_goals = player["goals"]
+        except KeyError:
+            p_goals = 0
+
+        try:
+            p_assists = player["assists"]
+        except KeyError:
+            p_assists = 0
+
+        try:
+            p_saves = player["saves"]
+        except KeyError:
+            p_saves = 0
+
+        try:
+            p_shots = player["shots"]
+        except KeyError:
+            p_shots = 0
+
+        try:
+            p_score = player["score"]
+        except KeyError:
+            p_score = 0
 
         # Boost Stats
         try:
@@ -532,7 +584,6 @@ def update_player_wins(player_ids_dict):
     for player_id in player_ids_dict:
         Player.add_player_win(player_id["id"])
 
-
 def avoid_default_names(player_ids_dict):
     team_name = ""
     playerarr = []
@@ -540,7 +591,6 @@ def avoid_default_names(player_ids_dict):
         playerarr.append(Player.get_player_name_by_id(player_id["id"]))
     playerarr.sort()
     team_name = "_".join(playerarr)
-
 
     return team_name
 
@@ -570,8 +620,33 @@ def check_name(t_name, spell_check):
         verified_name = " ".join(namearr)
     return verified_name
 
+def build_match(data):
+    # Meta Data
+    match_map = data["gameMetadata"]["map"]
+    match_time = data["gameMetadata"]["time"]
+
+    # Match Data
+    playlist = data["gameMetadata"]["playlist"]
+    match_guid = data["gameMetadata"]["matchGuid"]
+
+    match = Match(match_map, match_time, match_guid, playlist)
+
+    if (Match.look_for_match_index(match_guid) == -100):
+        Match.add_match(match)
+        return True
+    else:
+        return False
 
 def build_teams(data, spell_check):
+
+    # Match Data
+    match_guid = data["gameMetadata"]["matchGuid"]
+
+    # TODO check if these values are working.
+    match = Match.get_match(match_guid)
+    match_playlist = match.playlist
+    match_map = match.map
+    match_time = match.time
 
     # general stats
     t0_player_ids_dict = data["teams"][0]["playerIds"]
@@ -618,6 +693,7 @@ def build_teams(data, spell_check):
     )
     Team.add_team(t0)
     Team.add_team(t1)
+    return True
 
 def get_files(folder_path):
     onlyfiles = [f for f in listdir(folder_path) if isfile(join(folder_path, f))]
@@ -635,12 +711,14 @@ def parse_files(folder_path, spell_check):
         raw_json = MessageToJson(analysis.protobuf_game)
         data = json.loads(raw_json)
 
-        f = open("lastfile.json", "a")
+        f = open("lastfile.json", "w+")
         f.write(raw_json)
         f.close()
-        build_players(data)
-        build_teams(data, spell_check)
+        is_new_match = build_match(data)
 
+        if(is_new_match):
+            build_players(data)
+            build_teams(data, spell_check)
 
 def write_output_file(filename, data, permissions):
     player_file = open(filename, permissions)
