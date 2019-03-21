@@ -517,21 +517,47 @@ def update_player_team(player_ids_dict, t_name):
     for player_id in player_ids_dict:
         Player.add_team_name(t_name, player_id["id"])
 
-def build_teams(data):
+def check_name(t_name, spell_check):
+    # credit goes to Jordak for the idea <3
+
+    verified_name = ""
+
+    if(spell_check == 'N'):
+        verified_name = t_name
+    else:
+        spell = SpellChecker()
+        spell.word_frequency.load_text_file('./TeamNameSpellCheckerCustomLanguage.txt')
+        namearr = t_name.split()
+        misspelled = spell.unknown(namearr)
+        corrections = {}
+
+        for word in misspelled:
+            correct = spell.correction(word)
+            corrections[word] = correct
+
+        for index, this_word in enumerate(namearr):
+            if this_word in corrections.keys():
+                namearr[index] = corrections[this_word]
+
+        verified_name = " ".join(namearr)
+    return verified_name
+
+
+def build_teams(data, spell_check):
 
     # we know there will always be 2 teams so lets be explicit
-    
+
     # general stats
     t0_player_ids_dict = data["teams"][0]["playerIds"]
     t0_score = data["teams"][0]["score"]
-    t0_name= data["teams"][0]["name"]
+    t0_name= check_name(data["teams"][0]["name"], spell_check)
     t0_win = 0
 
     update_player_team(t0_player_ids_dict, t0_name)
 
     t1_player_ids_dict = data["teams"][1]["playerIds"]
     t1_score = data["teams"][1]["score"]
-    t1_name= data["teams"][1]["name"]
+    t1_name= check_name(data["teams"][1]["name"], spell_check)
     t1_win = 0
 
     update_player_team(t1_player_ids_dict, t1_name)
@@ -560,7 +586,7 @@ def get_files(folder_path):
     onlyfiles = [f for f in listdir(folder_path) if isfile(join(folder_path, f))]
     return onlyfiles
 
-def parse_files(folder_path):
+def parse_files(folder_path, spell_check):
     for file in get_files(folder_path):
         _json = carball.decompile_replay(folder_path + "/" + file, 
                                         output_path='foo.json', 
@@ -576,7 +602,7 @@ def parse_files(folder_path):
         f.write(raw_json)
         f.close()
         build_players(data)
-        build_teams(data)
+        build_teams(data, spell_check)
 
 
 def write_output_file(filename, data, permissions):
@@ -669,26 +695,17 @@ def create_team_output(folder_path):
         write_output_file(folder_path + "team_data.csv", team_data, "a")
 
 def main():
-    # folder_path = ""
-    # spell_check = ""
-    # arg_parser = argparse.ArgumentParser(description="foo")
-
-    # arg_parser.add_argument("-p", "--folder_path", required=True)
-    # arg_parser.add_argument("-s", "--spell_check_enabled", default = "y")
-    # # folder_path = arg_parser.parse_args(["--folder_path"])
-    # spell_check = arg_parser.parse_args(["--spell_check_enabled"])
     parser = argparse.ArgumentParser()
 
-    # Add more options if you like
     parser.add_argument("-f", "--folder", dest="folder_path",
                         help="please enter --folder pathToFolder", required=True)
 
-    parser.add_argument("-q", "--spell", dest="spell_check",
+    parser.add_argument("-s", "--spell", dest="spell_check",
                         help="enter Y or N for spell check", default="Y")
 
     args = parser.parse_args()
 
-    parse_files(args.folder_path)
+    parse_files(args.folder_path, args.spell_check)
     create_player_output(args.folder_path)
     create_team_output(args.folder_path)
 
