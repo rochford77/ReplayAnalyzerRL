@@ -84,7 +84,7 @@ class Builder():
         try:
             t1_name = self.check_name(self.data["teams"][1]["name"])
         except KeyError:
-            t1_name = avoid_default_names(t0_player_ids_dict)
+            t1_name = avoid_default_names(t1_player_ids_dict)
 
         update_player_team(t1_player_ids_dict, t1_name)
 
