@@ -14,7 +14,7 @@
 + [protobuf](https://developers.google.com/protocol-buffers/)
 + [PySpellChecker](https://pypi.org/project/pyspellchecker/)
 
-`pip install -r requirements.txt in your shell.`
+`pip install -r requirements.txt`
 
 
 ### Usage
