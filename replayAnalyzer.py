@@ -16,6 +16,7 @@ from builder import Builder
 
 def get_files(folder_path):
     onlyfiles = [f for f in listdir(folder_path) if isfile(join(folder_path, f))]
+    
     return onlyfiles
 
 def parse_files(folder_path, spell_check):
