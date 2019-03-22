@@ -1,10 +1,11 @@
 class Team:
     raw_teams = []
 
-    def __init__(self, score, name, win):
+    def __init__(self, score, name, win, game_map):
         self.score = score
         self.name = name
         self.win = win
+        self.maps_played = [game_map]
         self.games = 1
 
     def look_for_team_index(team_name):
@@ -24,6 +25,7 @@ class Team:
             if (matched_index == -100):
                 Team.raw_teams.append(t)
             else:
-                Team.raw_teams[matched_index].score = Team.raw_teams[matched_index].score   + t.score
-                Team.raw_teams[matched_index].win   = Team.raw_teams[matched_index].win     + t.win
-                Team.raw_teams[matched_index].games = Team.raw_teams[matched_index].games   + t.games
+                Team.raw_teams[matched_index].score         = Team.raw_teams[matched_index].score       + t.score
+                Team.raw_teams[matched_index].win           = Team.raw_teams[matched_index].win         + t.win
+                Team.raw_teams[matched_index].games         = Team.raw_teams[matched_index].games       + t.games
+                Team.raw_teams[matched_index].maps_played   = Team.raw_teams[matched_index].maps_played + t.maps_played

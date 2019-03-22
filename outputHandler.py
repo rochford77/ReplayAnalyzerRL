@@ -89,6 +89,7 @@ class OutputHandler():
                 + "," + str(theTeam.score)
                 + "," + str(theTeam.win)
                 + "," + str(theTeam.games)
+                + "," + str(theTeam.maps_played)
                 +"\n"
             )
             self.write_output_file(self.folder_path + "team_data.csv", team_data, "a")
