@@ -95,22 +95,11 @@ class Builder():
             t1_win = 1
             update_player_wins(t1_player_ids_dict)
 
-        t0 = Team(
-            t0_score,
-            t0_name,
-            t0_win,
-            match.map
-        )
+        t0 = Team(t0_score, t0_name, t0_win, match.map)
+        t1 = Team(t1_score, t1_name, t1_win, match.map)
 
-        t1 = Team(
-            t1_score,
-            t1_name,
-            t1_win,
-            match.map
-        )
         Team.add_team(t0)
         Team.add_team(t1)
-
 
     def build_players(self):
 
@@ -121,12 +110,11 @@ class Builder():
             p_name = player["name"]
 
             # (Verified by guys at SaltieRL/Claculated.gg/makers of carball)
-            # Carball wont output a key-value pair for something if its value as 0. 
+            # Carball wont output a key-value pair for something if its value as 0.
             # Python will throw a key error if you set something as a node that isnt there
-            # must handle the errors
+            # Must handle the errors
 
             # Primary stats
-            
             try:
                 p_isbot = player["isBot"]
             except KeyError:

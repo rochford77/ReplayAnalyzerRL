@@ -28,4 +28,4 @@ class Team:
                 Team.raw_teams[matched_index].score         = Team.raw_teams[matched_index].score       + t.score
                 Team.raw_teams[matched_index].win           = Team.raw_teams[matched_index].win         + t.win
                 Team.raw_teams[matched_index].games         = Team.raw_teams[matched_index].games       + t.games
-                Team.raw_teams[matched_index].maps_played   = Team.raw_teams[matched_index].maps_played + t.maps_played
+                Team.raw_teams[matched_index].maps_played   = set.union(Team.raw_teams[matched_index].maps_played, t.maps_played)

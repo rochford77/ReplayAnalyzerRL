@@ -85,11 +85,12 @@ class OutputHandler():
         self.write_output_file(self.folder_path + "team_data.csv", team_header_data, "w+")
 
         for theTeam in Team.raw_teams:
+
             team_data = (str(theTeam.name)
                 + "," + str(theTeam.score)
                 + "," + str(theTeam.win)
                 + "," + str(theTeam.games)
-                + "," + str(theTeam.maps_played).replace(", ", " | ")
+                + "," + '_'.join(theTeam.maps_played)
                 +"\n"
             )
             self.write_output_file(self.folder_path + "team_data.csv", team_data, "a")
