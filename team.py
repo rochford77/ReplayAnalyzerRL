@@ -10,16 +10,16 @@ class Team:
         self.playlist_filter = playlist_filter
         self.games = 1
         self.win = 0
-        # self.team_node = maybe i can simplify some of the node refs
+        self.team_node = data["teams"][team_index]
 
-        self.score = data["teams"][team_index]["score"]
-        self.player_ids_dict = data["teams"][team_index]["playerIds"]
+        self.score = self.team_node["score"]
+        self.player_ids_dict = self.team_node["playerIds"]
 
         # orange blue does not appear to get a node if names are not custom
         try:
-            self.name = self.check_name(data["teams"][team_index]["name"])
+            self.name = self.check_name(self.team_node["name"])
         except KeyError:
-            self.name = self.get_non_default_name(t0_player_ids_dict)
+            self.name = self.get_non_default_name()
  
     def check_name(self, t_name):
         # credit goes to Jordak for the idea <3

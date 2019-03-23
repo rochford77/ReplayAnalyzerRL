@@ -16,9 +16,6 @@ class Builder():
             self.build_players()
             self.build_teams(match)
 
-
-    
-        
     def build_teams(self, match):
 
         t0 = Team(self.data, match.map, 0, self.spell_check, self.playlist_filter)
