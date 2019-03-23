@@ -261,86 +261,86 @@ class Player:
             self.timeAtBoostSpeed = 0.00
         
 
-    def look_for_player_index(player_id):
+    def look_for_player_index(self):
         index = -100
         for player in Player.raw_players:
-            if player.id == player_id:
+            if player.id == self.id:
                 index = Player.raw_players.index(player)
                 break
         return index
 
-    def add_player_win(player_id):
-        matched_index = Player.look_for_player_index(player_id)
+    def add_player_win(self):
+        matched_index = self.look_for_player_index()
         if(matched_index != -100):
             Player.raw_players[matched_index].wins = Player.raw_players[matched_index].wins + 1
 
-    def add_team_name(team_name, player_id):
-        matched_index = Player.look_for_player_index(player_id)
+    def add_team_name(self, team_name):
+        matched_index = self.look_for_player_index()
         if(matched_index != -100):
             Player.raw_players[matched_index].team_name = team_name
 
-    def get_player_name_by_id(player_id):
+    def get_player_by_id(player_id):
         for player in Player.raw_players:
             if player.id == player_id:
-                return player.name
+                return player
 
-    def add_player(p):
+    def add_player(self):
         if len(Player.raw_players) == 0:
-            Player.raw_players.append(p)
+            Player.raw_players.append(self)
         else:
-            matched_index = Player.look_for_player_index(p.id)
+            matched_index = self.look_for_player_index()
 
             if(matched_index == -100):
-                Player.raw_players.append(p)
+                Player.raw_players.append(self)
             else:
                 # Be sure to scroll right here if your window is less than 140 characters wide (like GitHub)
                 # Bad form I guess, but having things lined up is a dream for multi-cursor. Really, game changer.
 
-                Player.raw_players[matched_index].goals                     = Player.raw_players[matched_index].goals                   + p.goals
-                Player.raw_players[matched_index].assists                   = Player.raw_players[matched_index].assists                 + p.assists
-                Player.raw_players[matched_index].saves                     = Player.raw_players[matched_index].saves                   + p.saves
-                Player.raw_players[matched_index].goshotsals                = Player.raw_players[matched_index].shots                   + p.shots
-                Player.raw_players[matched_index].score                     = Player.raw_players[matched_index].score                   + p.score
-                Player.raw_players[matched_index].games                     = Player.raw_players[matched_index].games                   + p.games
-                Player.raw_players[matched_index].boostUseage               = Player.raw_players[matched_index].boostUseage             + p.boostUseage
-                Player.raw_players[matched_index].numSmallBoosts            = Player.raw_players[matched_index].numSmallBoosts          + p.numSmallBoosts
-                Player.raw_players[matched_index].numLargeBoosts            = Player.raw_players[matched_index].numLargeBoosts          + p.numLargeBoosts
-                Player.raw_players[matched_index].wastedCollection          = Player.raw_players[matched_index].wastedCollection        + p.wastedCollection
-                Player.raw_players[matched_index].wastedUsage               = Player.raw_players[matched_index].wastedUsage             + p.wastedUsage
-                Player.raw_players[matched_index].timeFullBoost             = Player.raw_players[matched_index].timeFullBoost           + p.timeFullBoost
-                Player.raw_players[matched_index].timeLowBoost              = Player.raw_players[matched_index].timeLowBoost            + p.timeLowBoost
-                Player.raw_players[matched_index].timeNoBoost               = Player.raw_players[matched_index].timeNoBoost             + p.timeNoBoost
-                Player.raw_players[matched_index].numStolenBoosts           = Player.raw_players[matched_index].numStolenBoosts         + p.numStolenBoosts
-                Player.raw_players[matched_index].averageBoostLevel         = Player.raw_players[matched_index].averageBoostLevel       + p.averageBoostLevel
-                Player.raw_players[matched_index].ballHitForward            = Player.raw_players[matched_index].ballHitForward          + p.ballHitForward
-                Player.raw_players[matched_index].timeClosestToBall         = Player.raw_players[matched_index].timeClosestToBall       + p.timeClosestToBall
-                Player.raw_players[matched_index].timeFurthestFromBall      = Player.raw_players[matched_index].timeFurthestFromBall    + p.timeFurthestFromBall
-                Player.raw_players[matched_index].possessionTime            = Player.raw_players[matched_index].possessionTime          + p.possessionTime
-                Player.raw_players[matched_index].turnovers                 = Player.raw_players[matched_index].turnovers               + p.turnovers
-                Player.raw_players[matched_index].turnoversOnMyHalf         = Player.raw_players[matched_index].turnoversOnMyHalf       + p.turnoversOnMyHalf
-                Player.raw_players[matched_index].turnoversOnTheirHalf      = Player.raw_players[matched_index].turnoversOnTheirHalf    + p.turnoversOnTheirHalf
-                Player.raw_players[matched_index].wonTurnovers              = Player.raw_players[matched_index].wonTurnovers            + p.wonTurnovers
-                Player.raw_players[matched_index].timeOnGround              = Player.raw_players[matched_index].timeOnGround            + p.timeOnGround
-                Player.raw_players[matched_index].timeLowInAir              = Player.raw_players[matched_index].timeLowInAir            + p.timeLowInAir
-                Player.raw_players[matched_index].timeHighInAir             = Player.raw_players[matched_index].timeHighInAir           + p.timeHighInAir
-                Player.raw_players[matched_index].timeInDefendingHalf       = Player.raw_players[matched_index].timeInDefendingHalf     + p.timeInDefendingHalf
-                Player.raw_players[matched_index].timeInAttackingHalf       = Player.raw_players[matched_index].timeInAttackingHalf     + p.timeInAttackingHalf
-                Player.raw_players[matched_index].timeInDefendingThird      = Player.raw_players[matched_index].timeInDefendingThird    + p.timeInDefendingThird
-                Player.raw_players[matched_index].timeInNeutralThird        = Player.raw_players[matched_index].timeInNeutralThird      + p.timeInNeutralThird
-                Player.raw_players[matched_index].timeInAttackingThird      = Player.raw_players[matched_index].timeInAttackingThird    + p.timeInAttackingThird
-                Player.raw_players[matched_index].timeBehindBall            = Player.raw_players[matched_index].timeBehindBall          + p.timeBehindBall
-                Player.raw_players[matched_index].timeInFrontBall           = Player.raw_players[matched_index].timeInFrontBall         + p.timeInFrontBall
-                Player.raw_players[matched_index].timeNearWall              = Player.raw_players[matched_index].timeNearWall            + p.timeNearWall
-                Player.raw_players[matched_index].timeInCorner              = Player.raw_players[matched_index].timeInCorner            + p.timeInCorner
-                Player.raw_players[matched_index].averageSpeed              = Player.raw_players[matched_index].averageSpeed            + p.averageSpeed
-                Player.raw_players[matched_index].averageHitDistance        = Player.raw_players[matched_index].averageHitDistance      + p.averageHitDistance
-                Player.raw_players[matched_index].averageDistanceFromCenter = Player.raw_players[matched_index].averageDistanceFromCenter + p.averageDistanceFromCenter
-                Player.raw_players[matched_index].totalHits                 = Player.raw_players[matched_index].totalHits               + p.totalHits
-                Player.raw_players[matched_index].totalPasses               = Player.raw_players[matched_index].totalPasses             + p.totalPasses
-                Player.raw_players[matched_index].totalShots                = Player.raw_players[matched_index].totalShots              + p.totalShots
-                Player.raw_players[matched_index].totalDribbles             = Player.raw_players[matched_index].totalDribbles           + p.totalDribbles
-                Player.raw_players[matched_index].totalDribbleConts         = Player.raw_players[matched_index].totalDribbleConts       + p.totalDribbleConts
-                Player.raw_players[matched_index].totalAerials              = Player.raw_players[matched_index].totalAerials            + p.totalAerials
-                Player.raw_players[matched_index].timeAtSlowSpeed           = Player.raw_players[matched_index].timeAtSlowSpeed         + p.timeAtSlowSpeed
-                Player.raw_players[matched_index].timeAtSuperSonic          = Player.raw_players[matched_index].timeAtSuperSonic        + p.timeAtSuperSonic
-                Player.raw_players[matched_index].timeAtBoostSpeed          = Player.raw_players[matched_index].timeAtBoostSpeed        + p.timeAtBoostSpeed
+                Player.raw_players[matched_index].goals                     = Player.raw_players[matched_index].goals                       + self.goals
+                Player.raw_players[matched_index].assists                   = Player.raw_players[matched_index].assists                     + self.assists
+                Player.raw_players[matched_index].saves                     = Player.raw_players[matched_index].saves                       + self.saves
+                Player.raw_players[matched_index].goshotsals                = Player.raw_players[matched_index].shots                       + self.shots
+                Player.raw_players[matched_index].score                     = Player.raw_players[matched_index].score                       + self.score
+                Player.raw_players[matched_index].games                     = Player.raw_players[matched_index].games                       + self.games
+                Player.raw_players[matched_index].boostUseage               = Player.raw_players[matched_index].boostUseage                 + self.boostUseage
+                Player.raw_players[matched_index].numSmallBoosts            = Player.raw_players[matched_index].numSmallBoosts              + self.numSmallBoosts
+                Player.raw_players[matched_index].numLargeBoosts            = Player.raw_players[matched_index].numLargeBoosts              + self.numLargeBoosts
+                Player.raw_players[matched_index].wastedCollection          = Player.raw_players[matched_index].wastedCollection            + self.wastedCollection
+                Player.raw_players[matched_index].wastedUsage               = Player.raw_players[matched_index].wastedUsage                 + self.wastedUsage
+                Player.raw_players[matched_index].timeFullBoost             = Player.raw_players[matched_index].timeFullBoost               + self.timeFullBoost
+                Player.raw_players[matched_index].timeLowBoost              = Player.raw_players[matched_index].timeLowBoost                + self.timeLowBoost
+                Player.raw_players[matched_index].timeNoBoost               = Player.raw_players[matched_index].timeNoBoost                 + self.timeNoBoost
+                Player.raw_players[matched_index].numStolenBoosts           = Player.raw_players[matched_index].numStolenBoosts             + self.numStolenBoosts
+                Player.raw_players[matched_index].averageBoostLevel         = Player.raw_players[matched_index].averageBoostLevel           + self.averageBoostLevel
+                Player.raw_players[matched_index].ballHitForward            = Player.raw_players[matched_index].ballHitForward              + self.ballHitForward
+                Player.raw_players[matched_index].timeClosestToBall         = Player.raw_players[matched_index].timeClosestToBall           + self.timeClosestToBall
+                Player.raw_players[matched_index].timeFurthestFromBall      = Player.raw_players[matched_index].timeFurthestFromBall        + self.timeFurthestFromBall
+                Player.raw_players[matched_index].possessionTime            = Player.raw_players[matched_index].possessionTime              + self.possessionTime
+                Player.raw_players[matched_index].turnovers                 = Player.raw_players[matched_index].turnovers                   + self.turnovers
+                Player.raw_players[matched_index].turnoversOnMyHalf         = Player.raw_players[matched_index].turnoversOnMyHalf           + self.turnoversOnMyHalf
+                Player.raw_players[matched_index].turnoversOnTheirHalf      = Player.raw_players[matched_index].turnoversOnTheirHalf        + self.turnoversOnTheirHalf
+                Player.raw_players[matched_index].wonTurnovers              = Player.raw_players[matched_index].wonTurnovers                + self.wonTurnovers
+                Player.raw_players[matched_index].timeOnGround              = Player.raw_players[matched_index].timeOnGround                + self.timeOnGround
+                Player.raw_players[matched_index].timeLowInAir              = Player.raw_players[matched_index].timeLowInAir                + self.timeLowInAir
+                Player.raw_players[matched_index].timeHighInAir             = Player.raw_players[matched_index].timeHighInAir               + self.timeHighInAir
+                Player.raw_players[matched_index].timeInDefendingHalf       = Player.raw_players[matched_index].timeInDefendingHalf         + self.timeInDefendingHalf
+                Player.raw_players[matched_index].timeInAttackingHalf       = Player.raw_players[matched_index].timeInAttackingHalf         + self.timeInAttackingHalf
+                Player.raw_players[matched_index].timeInDefendingThird      = Player.raw_players[matched_index].timeInDefendingThird        + self.timeInDefendingThird
+                Player.raw_players[matched_index].timeInNeutralThird        = Player.raw_players[matched_index].timeInNeutralThird          + self.timeInNeutralThird
+                Player.raw_players[matched_index].timeInAttackingThird      = Player.raw_players[matched_index].timeInAttackingThird        + self.timeInAttackingThird
+                Player.raw_players[matched_index].timeBehindBall            = Player.raw_players[matched_index].timeBehindBall              + self.timeBehindBall
+                Player.raw_players[matched_index].timeInFrontBall           = Player.raw_players[matched_index].timeInFrontBall             + self.timeInFrontBall
+                Player.raw_players[matched_index].timeNearWall              = Player.raw_players[matched_index].timeNearWall                + self.timeNearWall
+                Player.raw_players[matched_index].timeInCorner              = Player.raw_players[matched_index].timeInCorner                + self.timeInCorner
+                Player.raw_players[matched_index].averageSpeed              = Player.raw_players[matched_index].averageSpeed                + self.averageSpeed
+                Player.raw_players[matched_index].averageHitDistance        = Player.raw_players[matched_index].averageHitDistance          + self.averageHitDistance
+                Player.raw_players[matched_index].averageDistanceFromCenter = Player.raw_players[matched_index].averageDistanceFromCenter   + self.averageDistanceFromCenter
+                Player.raw_players[matched_index].totalHits                 = Player.raw_players[matched_index].totalHits                   + self.totalHits
+                Player.raw_players[matched_index].totalPasses               = Player.raw_players[matched_index].totalPasses                 + self.totalPasses
+                Player.raw_players[matched_index].totalShots                = Player.raw_players[matched_index].totalShots                  + self.totalShots
+                Player.raw_players[matched_index].totalDribbles             = Player.raw_players[matched_index].totalDribbles               + self.totalDribbles
+                Player.raw_players[matched_index].totalDribbleConts         = Player.raw_players[matched_index].totalDribbleConts           + self.totalDribbleConts
+                Player.raw_players[matched_index].totalAerials              = Player.raw_players[matched_index].totalAerials                + self.totalAerials
+                Player.raw_players[matched_index].timeAtSlowSpeed           = Player.raw_players[matched_index].timeAtSlowSpeed             + self.timeAtSlowSpeed
+                Player.raw_players[matched_index].timeAtSuperSonic          = Player.raw_players[matched_index].timeAtSuperSonic            + self.timeAtSuperSonic
+                Player.raw_players[matched_index].timeAtBoostSpeed          = Player.raw_players[matched_index].timeAtBoostSpeed            + self.timeAtBoostSpeed

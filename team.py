@@ -4,7 +4,6 @@ class Team:
     raw_teams = []
 
     def __init__(self, data, game_map, team_index, spell_check, playlist_filter):
-
         self.maps_played = [game_map]
         self.spell_check = spell_check
         self.playlist_filter = playlist_filter
@@ -23,7 +22,6 @@ class Team:
  
     def check_name(self, t_name):
         # credit goes to Jordak for the idea <3
-
         verified_name = ""
 
         if(self.spell_check == 'N'):
@@ -50,7 +48,8 @@ class Team:
         team_name = ""
         playerarr = []
         for player_id in self.player_ids_dict:
-            playerarr.append(Player.get_player_name_by_id(player_id["id"]))
+            p = Player.get_player_by_id(player_id["id"])
+            playerarr.append(p.name)
         playerarr.sort()
         team_name = "_".join(playerarr)
 

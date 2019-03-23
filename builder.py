@@ -19,10 +19,10 @@ class Builder():
     def build_teams(self, match):
 
         t0 = Team(self.data, match.map, 0, self.spell_check, self.playlist_filter)
-        update_player_team(t0.player_ids_dict, t0.name)
+        update_player_team_wins(t0.player_ids_dict, t0.name)
 
         t1 = Team(self.data, match.map, 1, self.spell_check, self.playlist_filter)
-        update_player_team(t1.player_ids_dict, t1.name)
+        update_player_team_wins(t1.player_ids_dict, t1.name)
 
         if t0.score > t1.score:
             t0.win = 1
@@ -42,12 +42,15 @@ class Builder():
             if p.isbot == True:
                 print("Robots are taking over!")
             else:
-                Player.add_player(p) # TODO can I make this a self.addplayer?
+                p.add_player()
 
-def update_player_team(player_ids_dict, t_name):
+def update_player_team_wins(player_ids_dict, t_name):
     for player_id in player_ids_dict:
-        Player.add_team_name(t_name, player_id["id"])
+        p = Player.get_player_by_id(player_id["id"])
+        p.add_team_name(t_name)
 
 def update_player_wins(player_ids_dict):
     for player_id in player_ids_dict:
-        Player.add_player_win(player_id["id"])
+        p = Player.get_player_by_id(player_id["id"])
+        p.add_player_win()
+
