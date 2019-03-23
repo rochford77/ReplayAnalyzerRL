@@ -55,10 +55,10 @@ class Team:
 
         return team_name
 
-    def look_for_team_index(team_name):
+    def look_for_team_index(self):
         index = -100
         for team in Team.raw_teams:
-            if team.name == team_name:
+            if team.name == self.name:
                 index = Team.raw_teams.index(team)
                 break
         return index
@@ -68,7 +68,7 @@ class Team:
         if len(Team.raw_teams) == 0:
             Team.raw_teams.append(self)
         else:
-            matched_index = Team.look_for_team_index(self.name)
+            matched_index = self.look_for_team_index()
 
             if (matched_index == -100):
                 Team.raw_teams.append(self)

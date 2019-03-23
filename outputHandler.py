@@ -1,6 +1,5 @@
 from team import Team
 from player import Player
-from match import Match
 
 class OutputHandler():
     def __init__(self, folder_path):
