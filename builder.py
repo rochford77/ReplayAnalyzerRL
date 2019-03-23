@@ -4,9 +4,10 @@ from player import Player
 from spellchecker import SpellChecker
 
 class Builder():
-    def __init__(self, data, spell_check):
+    def __init__(self, data, spell_check, playlist_filter):
         self.data = data
         self.spell_check = spell_check
+        self.playlist_filter = playlist_filter
 
         is_new_match = self.build_match()
 
@@ -42,6 +43,7 @@ class Builder():
 
     def build_match(self):
         # Meta Data
+        valid_match_created = False
         match_map = self.data["gameMetadata"]["map"]
         match_time = self.data["gameMetadata"]["time"]
 
@@ -51,11 +53,13 @@ class Builder():
 
         match = Match(match_map, match_time, match_guid, playlist)
 
-        if (Match.look_for_match_index(match_guid) == -100):
+        is_valid_playlist = (self.playlist_filter == None or self.playlist_filter == playlist)
+
+        if ((Match.look_for_match_index(match_guid) == -100) and is_valid_playlist):
             Match.add_match(match)
-            return True
-        else:
-            return False
+            valid_match_created = True
+        
+        return valid_match_created
         
     def build_teams(self):
 

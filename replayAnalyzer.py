@@ -19,7 +19,7 @@ def get_files(folder_path):
     
     return onlyfiles
 
-def parse_files(folder_path, spell_check):
+def parse_files(folder_path, spell_check, playlist_filter):
     for file in get_files(folder_path):
         _json = carball.decompile_replay(folder_path + "/" + file, 
                                         output_path='foo.json', 
@@ -35,7 +35,7 @@ def parse_files(folder_path, spell_check):
         f.write(raw_json)
         f.close()
 
-        Builder(data, spell_check)
+        Builder(data, spell_check, playlist_filter)
 
 def main():
     parser = argparse.ArgumentParser()
@@ -46,9 +46,13 @@ def main():
     parser.add_argument("-s", "--spell", dest="spell_check",
                         help="enter Y or N for spell check", default="Y")
 
+    parser.add_argument("-p", "--playlist", dest="playlist_filter",
+        help="enter the name of the playlist to filter for", default = None)
+
+    
     args = parser.parse_args()
 
-    parse_files(args.folder_path, args.spell_check)
+    parse_files(args.folder_path, args.spell_check, args.playlist_filter)
 
     OutputHandler(args.folder_path)
 
