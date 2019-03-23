@@ -1,110 +1,265 @@
 class Player:
     raw_players = []
 
-    def __init__(
-            self,
-            id,
-            name,
-            goals = 0,
-            assists = 0,
-            saves = 0,
-            shots = 0,
-            score = 0,
-            boostUseage = 0,
-            numSmallBoosts = 0,
-            numLargeBoosts = 0,
-            wastedCollection = 0,
-            wastedUsage = 0,
-            timeFullBoost = 0,
-            timeLowBoost = 0,
-            timeNoBoost = 0,
-            numStolenBoosts = 0,
-            averageBoostLevel = 0,
-            ballHitForward = 0,
-            timeClosestToBall = 0,
-            timeFurthestFromBall = 0,
-            possessionTime = 0,
-            turnovers = 0,
-            turnoversOnMyHalf = 0,
-            turnoversOnTheirHalf = 0,
-            wonTurnovers = 0,
-            timeOnGround = 0,
-            timeLowInAir = 0,
-            timeHighInAir = 0,
-            timeInDefendingHalf = 0,
-            timeInAttackingHalf = 0,
-            timeInDefendingThird = 0,
-            timeInNeutralThird = 0,
-            timeInAttackingThird = 0,
-            timeBehindBall = 0,
-            timeInFrontBall = 0,
-            timeNearWall = 0,
-            timeInCorner = 0,
-            averageSpeed = 0,
-            averageHitDistance = 0,
-            averageDistanceFromCenter = 0,
-            totalHits = 0,
-            totalPasses = 0,
-            totalShots = 0,
-            totalDribbles = 0,
-            totalDribbleConts = 0,
-            totalAerials = 0,
-            timeAtSlowSpeed = 0,
-            timeAtSuperSonic = 0,
-            timeAtBoostSpeed = 0
-        ):
-        self.id = id
-        self.name = name
-        self.goals = goals
-        self.assists = assists
-        self.saves = saves
-        self.shots = shots
-        self.score = score
-        self.boostUseage = boostUseage
-        self.numSmallBoosts = numSmallBoosts
-        self.numLargeBoosts = numLargeBoosts
-        self.wastedCollection = wastedCollection
-        self.wastedUsage = wastedUsage
-        self.timeFullBoost = timeFullBoost
-        self.timeLowBoost = timeLowBoost
-        self.timeNoBoost = timeNoBoost
-        self.numStolenBoosts = numStolenBoosts
-        self.averageBoostLevel = averageBoostLevel
-        self.ballHitForward = ballHitForward
-        self.timeClosestToBall = timeClosestToBall
-        self.timeFurthestFromBall = timeFurthestFromBall
-        self.possessionTime = possessionTime
-        self.turnovers = turnovers
-        self.turnoversOnMyHalf = turnoversOnMyHalf
-        self.turnoversOnTheirHalf = turnoversOnTheirHalf
-        self.wonTurnovers = wonTurnovers
-        self.timeOnGround = timeOnGround
-        self.timeLowInAir = timeLowInAir
-        self.timeHighInAir = timeHighInAir
-        self.timeInDefendingHalf = timeInDefendingHalf
-        self.timeInAttackingHalf = timeInAttackingHalf
-        self.timeInDefendingThird = timeInDefendingThird
-        self.timeInNeutralThird = timeInNeutralThird
-        self.timeInAttackingThird = timeInAttackingThird
-        self.timeBehindBall = timeBehindBall
-        self.timeInFrontBall = timeInFrontBall
-        self.timeNearWall = timeNearWall
-        self.timeInCorner = timeInCorner
-        self.averageSpeed = averageSpeed
-        self.averageHitDistance = averageHitDistance
-        self.averageDistanceFromCenter = averageDistanceFromCenter
-        self.totalHits = totalHits
-        self.totalPasses = totalPasses
-        self.totalShots = totalShots
-        self.totalDribbles = totalDribbles
-        self.totalDribbleConts = totalDribbleConts
-        self.totalAerials = totalAerials
-        self.timeAtSlowSpeed = timeAtSlowSpeed
-        self.timeAtSuperSonic = timeAtSuperSonic
-        self.timeAtBoostSpeed = timeAtBoostSpeed
+    def __init__(self, node):
         self.team_name = ""
         self.games = 1
         self.wins = 0
+        self.id = node["id"]["id"]
+        self.name = node["name"]
+
+        # (Verified by guys at SaltieRL/Calculated.gg/makers of carball)
+        # Carball wont output a key-value pair for something if its value as 0.
+        # Python will throw a key error if you set something as a node that isnt there
+        # Must handle the errors
+
+        # Primary stats
+        try:
+            self.isbot = node["isBot"]
+        except KeyError:
+            self.isbot = False
+
+        try:
+            self.goals = node["goals"]
+        except KeyError:
+            self.goals = 0
+
+        try:
+            self.assists = node["assists"]
+        except KeyError:
+            self.assists = 0
+
+        try:
+            self.saves = node["saves"]
+        except KeyError:
+            self.saves = 0
+
+        try:
+            self.shots = node["shots"]
+        except KeyError:
+            self.shots = 0
+
+        try:
+            self.score = node["score"]
+        except KeyError:
+            self.score = 0
+
+        # Boost Stats
+        boost_node = node["stats"]["boost"]
+        try:
+            self.boostUseage = boost_node["boostUsage"]
+        except KeyError:
+            self.boostUseage = 0.00
+
+        try:
+            self.numSmallBoosts = boost_node["numSmallBoosts"]
+        except KeyError:
+            self.numSmallBoosts = 0
+
+        try:
+            self.numLargeBoosts = boost_node["numLargeBoosts"]
+        except KeyError:
+            self.numLargeBoosts = 0 
+
+        try:
+            self.wastedCollection = boost_node["wastedCollection"]
+        except KeyError:
+            self.wastedCollection = 0.00
+
+        try:
+            self.wastedUsage = boost_node["wastedUsage"]
+        except KeyError:
+            self.wastedUsage  = 0.00
+
+        try:
+            self.timeFullBoost = boost_node["timeFullBoost"]
+        except KeyError:
+            self.timeFullBoost  = 0.00
+
+        try:
+            self.timeLowBoost = boost_node["timeLowBoost"]
+        except KeyError:
+            self.timeLowBoost = 0.00
+
+        try:
+            self.timeNoBoost = boost_node["timeNoBoost"]
+        except KeyError:
+            self.timeNoBoost = 0.00
+
+        try:
+            self.numStolenBoosts = boost_node["numStolenBoosts"]
+        except KeyError:
+            self.numStolenBoosts = 0
+
+        try:
+            self.averageBoostLevel = boost_node["averageBoostLevel"]
+        except KeyError:
+            self.averageBoostLevel = 0.00
+
+        # Distance Stats
+        distance_node = node["stats"]["distance"]
+        try:
+            self.ballHitForward = distance_node["ballHitForward"]
+        except KeyError:
+            self.ballHitForward  = 0.00
+
+        try:
+            self.timeClosestToBall = distance_node["timeClosestToBall"]
+        except KeyError:
+            self.timeClosestToBall = 0.00
+
+        try:
+            self.timeFurthestFromBall = distance_node["timeFurthestFromBall"]
+        except KeyError:
+            self.timeFurthestFromBall = 0.00
+
+        # Possession Stats
+        possession_node = node["stats"]["possession"]
+        try:
+            self.possessionTime = possession_node["possessionTime"]
+        except KeyError:
+            self.possessionTime = 0.00
+
+        try:
+            self.turnovers = possession_node["turnovers"]
+        except KeyError:
+            self.turnovers = 0
+
+        try:
+            self.turnoversOnMyHalf = possession_node["turnoversOnMyHalf"]
+        except KeyError:
+            self.turnoversOnMyHalf = 0
+
+        try:
+            self.turnoversOnTheirHalf = possession_node["turnoversOnTheirHalf"]
+        except KeyError:
+            self.turnoversOnTheirHalf = 0
+
+        try:
+            self.wonTurnovers = possession_node["wonTurnovers"]
+        except KeyError:
+            self.wonTurnovers = 0
+
+        # Positional Stats
+        position_node = node["stats"]["positionalTendencies"]
+        try:
+            self.timeOnGround = position_node["timeOnGround"]
+        except KeyError:
+            self.timeOnGround  = 0.00
+
+        try:
+            self.timeLowInAir = position_node["timeLowInAir"]
+        except KeyError:
+            self.timeLowInAir  = 0.00
+
+        try:
+            self.timeHighInAir = position_node["timeHighInAir"]
+        except KeyError:
+            self.timeHighInAir = 0.00
+
+        try:
+            self.timeInDefendingHalf = position_node["timeInDefendingHalf"]
+        except KeyError:
+            self.timeInDefendingHalf = 0.00
+
+        try:
+            self.timeInAttackingHalf = position_node["timeInAttackingHalf"]
+        except KeyError:
+            self.timeInAttackingHalf = 0.00
+
+        try:
+            self.timeInDefendingThird = position_node["timeInDefendingThird"]
+        except KeyError:
+            self.timeInDefendingThird = 0.00
+
+        try:
+            self.timeInNeutralThird = position_node["timeInNeutralThird"]
+        except KeyError:
+            self.timeInNeutralThird = 0.00
+
+        try:
+            self.timeInAttackingThird = position_node["timeInAttackingThird"]
+        except KeyError:
+            self.timeInAttackingThird = 0.00
+
+        try:
+            self.timeBehindBall = position_node["timeBehindBall"]
+        except KeyError:
+            self.timeBehindBall = 0.00
+
+        try:
+            self.timeInFrontBall = position_node["timeInFrontBall"]
+        except KeyError:
+            self.timeInFrontBall = 0.00
+
+        try:
+            self.timeNearWall = position_node["timeNearWall"]
+        except KeyError:
+            self.timeNearWall = 0.00
+
+        try:
+            self.timeInCorner = position_node["timeInCorner"]
+        except KeyError:
+            self.timeInCorner = 0.00
+
+        # average stats
+        avg_node = node["stats"]["averages"]
+        try:
+            self.averageSpeed = avg_node["averageSpeed"]
+        except KeyError:
+            self.averageSpeed = 0.00
+        try:
+            self.averageHitDistance = avg_node["averageHitDistance"]
+        except KeyError:
+            self.averageHitDistance = 0.00
+        try:
+            self.averageDistanceFromCenter = avg_node["averageDistanceFromCenter"]
+        except KeyError:
+            self.averageDistanceFromCenter = 0.00
+
+        # hit stats
+        hit_node = node["stats"]["hitCounts"]
+        try:
+            self.totalHits = hit_node["totalHits"]
+        except KeyError:
+            self.totalHits = 0
+        try:
+            self.totalPasses = hit_node["totalPasses"]
+        except KeyError:
+            self.totalPasses = 0
+        try:
+            self.totalShots = hit_node["totalShots"]
+        except KeyError:
+            self.totalShots = 0
+        try:
+            self.totalDribbles = hit_node["totalDribbles"]
+        except KeyError:
+            self.totalDribbles = 0
+        try:
+            self.totalDribbleConts = hit_node["totalDribbleConts"]
+        except KeyError:
+            self.totalDribbleConts = 0
+        try:
+            self.totalAerials = hit_node["totalAerials"]
+        except KeyError:
+            self.totalAerials = 0
+
+        # speed
+        speed_node = node["stats"]["speed"]
+        try:
+            self.timeAtSlowSpeed = hit_node["timeAtSlowSpeed"]
+        except KeyError:
+            self.timeAtSlowSpeed = 0.00
+
+        try:
+            self.timeAtSuperSonic = hit_node["timeAtSuperSonic"]
+        except KeyError:
+            self.timeAtSuperSonic = 0.00
+        try:
+            self.timeAtBoostSpeed = hit_node["timeAtBoostSpeed"]
+        except KeyError:
+            self.timeAtBoostSpeed = 0.00
+        
 
     def look_for_player_index(player_id):
         index = -100
