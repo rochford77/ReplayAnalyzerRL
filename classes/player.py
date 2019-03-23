@@ -250,13 +250,12 @@ class Player:
             self.timeAtSlowSpeed = speed_node["timeAtSlowSpeed"]
         except KeyError:
             self.timeAtSlowSpeed = 0.00
-
         try:
-            self.timeAtSuperSonic = hit_node["timeAtSuperSonic"]
+            self.timeAtSuperSonic = speed_node["timeAtSuperSonic"]
         except KeyError:
             self.timeAtSuperSonic = 0.00
         try:
-            self.timeAtBoostSpeed = hit_node["timeAtBoostSpeed"]
+            self.timeAtBoostSpeed = speed_node["timeAtBoostSpeed"]
         except KeyError:
             self.timeAtBoostSpeed = 0.00
         
