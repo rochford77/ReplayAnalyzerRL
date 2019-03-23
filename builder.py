@@ -17,7 +17,6 @@ class Builder():
             self.build_teams(match)
 
     def build_teams(self, match):
-
         t0 = Team(self.data, match.map, 0, self.spell_check, self.playlist_filter)
         update_player_team_wins(t0.player_ids_dict, t0.name)
 
@@ -31,14 +30,13 @@ class Builder():
             t1.win = 1
             update_player_wins(t1.player_ids_dict)
 
-        Team.add_team(t0) # TODO can i make this a self.addteam?
-        Team.add_team(t1)
+        t0.add_team()
+        t1.add_team()
 
     def build_players(self):
-
         for player_node in self.data["players"]:
             p = Player(player_node)
-            
+
             if p.isbot == True:
                 print("Robots are taking over!")
             else:

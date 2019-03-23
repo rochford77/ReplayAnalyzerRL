@@ -64,16 +64,16 @@ class Team:
         return index
 
 
-    def add_team(t):
+    def add_team(self):
         if len(Team.raw_teams) == 0:
-            Team.raw_teams.append(t)
+            Team.raw_teams.append(self)
         else:
-            matched_index = Team.look_for_team_index(t.name)
+            matched_index = Team.look_for_team_index(self.name)
 
             if (matched_index == -100):
-                Team.raw_teams.append(t)
+                Team.raw_teams.append(self)
             else:
-                Team.raw_teams[matched_index].score         = Team.raw_teams[matched_index].score       + t.score
-                Team.raw_teams[matched_index].win           = Team.raw_teams[matched_index].win         + t.win
-                Team.raw_teams[matched_index].games         = Team.raw_teams[matched_index].games       + t.games
-                Team.raw_teams[matched_index].maps_played   = list(set(Team.raw_teams[matched_index].maps_played + t.maps_played))
+                Team.raw_teams[matched_index].score         = Team.raw_teams[matched_index].score       + self.score
+                Team.raw_teams[matched_index].win           = Team.raw_teams[matched_index].win         + self.win
+                Team.raw_teams[matched_index].games         = Team.raw_teams[matched_index].games       + self.games
+                Team.raw_teams[matched_index].maps_played   = list(set(Team.raw_teams[matched_index].maps_played + self.maps_played))
