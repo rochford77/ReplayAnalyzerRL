@@ -9,11 +9,12 @@ class Builder():
         self.spell_check = spell_check
         self.playlist_filter = playlist_filter
 
-        is_new_match = self.build_match()
+        match = Match(data, playlist_filter)
+        is_valid_match = match.valid_match_created
 
-        if(is_new_match):
+        if(is_valid_match):
             self.build_players()
-            self.build_teams()
+            self.build_teams(match)
 
 
     def check_name(self, t_name):
@@ -40,32 +41,8 @@ class Builder():
 
             verified_name = " ".join(namearr)
         return verified_name
-
-    def build_match(self):
-        # Meta Data
-        valid_match_created = False
-        match_map = self.data["gameMetadata"]["map"]
-        match_time = self.data["gameMetadata"]["time"]
-
-        # Match Data
-        playlist = self.data["gameMetadata"]["playlist"]
-        match_guid = self.data["gameMetadata"]["matchGuid"]
-
-        match = Match(match_map, match_time, match_guid, playlist)
-
-        is_valid_playlist = (self.playlist_filter == None or self.playlist_filter == playlist)
-
-        if ((Match.look_for_match_index(match_guid) == -100) and is_valid_playlist):
-            Match.add_match(match)
-            valid_match_created = True
         
-        return valid_match_created
-        
-    def build_teams(self):
-
-        # Match Data
-        match_guid = self.data["gameMetadata"]["matchGuid"]
-        match = Match.get_match(match_guid)
+    def build_teams(self, match):
 
         # general stats
         t0_player_ids_dict = self.data["teams"][0]["playerIds"]

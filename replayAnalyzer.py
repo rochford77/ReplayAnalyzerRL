@@ -20,9 +20,13 @@ def get_files(folder_path):
     return onlyfiles
 
 def parse_files(folder_path, spell_check, playlist_filter):
+
+    temp_output_dir = "./TempJSON"
+    verify_temp_directory(temp_output_dir)
+
     for file in get_files(folder_path):
         _json = carball.decompile_replay(folder_path + "/" + file, 
-                                        output_path='foo.json', 
+                                        output_path=temp_output_dir +'/foo.json', 
                                         overwrite=True)
         game = Game()
         game.initialize(loaded_json=_json)
@@ -31,12 +35,15 @@ def parse_files(folder_path, spell_check, playlist_filter):
         raw_json = MessageToJson(analysis.protobuf_game)
         data = json.loads(raw_json)
 
-        f = open("lastfile.json", "w+")
+        f = open(temp_output_dir + "/lastfile.json", "w+")
         f.write(raw_json)
         f.close()
 
         Builder(data, spell_check, playlist_filter)
 
+def verify_temp_directory(path):
+    if not os.path.exists(path):
+        os.makedirs(path)
 def main():
     parser = argparse.ArgumentParser()
 
