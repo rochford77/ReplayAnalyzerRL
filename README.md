@@ -19,7 +19,7 @@
 
 ### Usage
 
-`python ./replayAnalyzer.py -f folder_path -s Y/N`
+`python ./replayAnalyzer.py --folder --spell --playlist`
 
 ### SpellChecker
 + The file TeamNameSpellCheckerCustomLanguage.txt can be used to add/prioritize words
