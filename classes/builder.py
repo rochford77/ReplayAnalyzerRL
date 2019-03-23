@@ -1,6 +1,6 @@
 from .match import Match
-from .team import Team
 from .player import Player
+from .team import Team
 
 
 class Builder():
@@ -51,4 +51,3 @@ def update_player_wins(player_ids_dict):
     for player_id in player_ids_dict:
         p = Player.get_player_by_id(player_id["id"])
         p.add_player_win()
-

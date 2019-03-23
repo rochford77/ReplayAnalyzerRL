@@ -247,7 +247,7 @@ class Player:
         # speed
         speed_node = node["stats"]["speed"]
         try:
-            self.timeAtSlowSpeed = hit_node["timeAtSlowSpeed"]
+            self.timeAtSlowSpeed = speed_node["timeAtSlowSpeed"]
         except KeyError:
             self.timeAtSlowSpeed = 0.00
 

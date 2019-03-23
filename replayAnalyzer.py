@@ -1,18 +1,25 @@
 #!/usr/bin/python3
 
-import sys, argparse, json, os, carball
+import argparse
+import json
+import os
+import sys
 from os import listdir
 from os.path import isfile, join
+
+import carball
+from carball.analysis.analysis_manager import AnalysisManager
+from carball.json_parser.game import Game
 from google.protobuf import message as _message
 from google.protobuf.json_format import MessageToJson
-from carball.json_parser.game import Game
-from carball.analysis.analysis_manager import AnalysisManager
 from spellchecker import SpellChecker
-from classes.player import Player
-from classes.match import Match
-from classes.team import Team
-from classes.outputHandler import OutputHandler
+
 from classes.builder import Builder
+from classes.match import Match
+from classes.outputHandler import OutputHandler
+from classes.player import Player
+from classes.team import Team
+
 
 def get_files(folder_path):
     onlyfiles = [f for f in listdir(folder_path) if isfile(join(folder_path, f))]
@@ -66,7 +73,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-
-

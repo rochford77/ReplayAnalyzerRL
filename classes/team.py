@@ -1,5 +1,8 @@
 from spellchecker import SpellChecker
+
 from .player import Player
+
+
 class Team:
     raw_teams = []
 
@@ -62,7 +65,6 @@ class Team:
                 index = Team.raw_teams.index(team)
                 break
         return index
-
 
     def add_team(self):
         if len(Team.raw_teams) == 0:
