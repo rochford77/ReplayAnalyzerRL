@@ -8,11 +8,11 @@ from google.protobuf.json_format import MessageToJson
 from carball.json_parser.game import Game
 from carball.analysis.analysis_manager import AnalysisManager
 from spellchecker import SpellChecker
-from player import Player
-from match import Match
-from team import Team
-from outputHandler import OutputHandler
-from builder import Builder
+from classes.player import Player
+from classes.match import Match
+from classes.team import Team
+from classes.outputHandler import OutputHandler
+from classes.builder import Builder
 
 def get_files(folder_path):
     onlyfiles = [f for f in listdir(folder_path) if isfile(join(folder_path, f))]
