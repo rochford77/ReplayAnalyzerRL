@@ -23,11 +23,9 @@ from classes.team import Team
 
 def get_files(folder_path):
     onlyfiles = [f for f in listdir(folder_path) if isfile(join(folder_path, f))]
-    
     return onlyfiles
 
 def parse_files(folder_path, spell_check, playlist_filter):
-
     temp_output_dir = "./TempJSON"
     verify_temp_directory(temp_output_dir)
 
@@ -62,12 +60,9 @@ def main():
 
     parser.add_argument("-p", "--playlist", dest="playlist_filter",
         help="enter the name of the playlist to filter for", default = None)
-
-    
+ 
     args = parser.parse_args()
-
     parse_files(args.folder_path, args.spell_check, args.playlist_filter)
-
     OutputHandler(args.folder_path)
 
 

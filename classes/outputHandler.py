@@ -9,7 +9,6 @@ class OutputHandler():
         self.create_player_output()
 
     def create_player_output(self):
-
         player_header_data = ("ID,NAME,TEAM,GOALS,ASSISTS,SAVES,SHOTS,SCORE,GAMES,WINS,BOOST USAGE,NUMBER OF SMALL BOOSTS,"
             + "NUMBER OF LARGE BOOSTS,WASTED COLLECTION,WASTED USAGE,TIME FULL BOOST,TIME LOW BOOST,TIME NO BOOST,STOLEN BOOSTS,"
             + "AVERAGE BOOST LVL,BALL HIT FORWARD,T NEAREST BALL,T FURTHEST BALL,POSSESSION T,TURNOVERS,TURNOVERS MY HALF,"
@@ -22,7 +21,6 @@ class OutputHandler():
         self.write_output_file(self.folder_path + "player_data.csv", player_header_data, "w+")
 
         for thePlayer in Player.raw_players:
-            
             player_data = (str(thePlayer.id)
                 + "," + str(thePlayer.name)
                 + "," + str(thePlayer.team_name)
@@ -85,7 +83,6 @@ class OutputHandler():
         self.write_output_file(self.folder_path + "team_data.csv", team_header_data, "w+")
 
         for theTeam in Team.raw_teams:
-
             team_data = (str(theTeam.name)
                 + "," + str(theTeam.score)
                 + "," + str(theTeam.win)
