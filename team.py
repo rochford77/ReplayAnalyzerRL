@@ -1,12 +1,60 @@
+from spellchecker import SpellChecker
+from player import Player
 class Team:
     raw_teams = []
 
-    def __init__(self, score, name, win, game_map):
-        self.score = score
-        self.name = name
-        self.win = win
+    def __init__(self, data, game_map, team_index, spell_check, playlist_filter):
+
         self.maps_played = [game_map]
+        self.spell_check = spell_check
+        self.playlist_filter = playlist_filter
         self.games = 1
+        self.win = 0
+        # self.team_node = maybe i can simplify some of the node refs
+
+        self.score = data["teams"][team_index]["score"]
+        self.player_ids_dict = data["teams"][team_index]["playerIds"]
+
+        # orange blue does not appear to get a node if names are not custom
+        try:
+            self.name = self.check_name(data["teams"][team_index]["name"])
+        except KeyError:
+            self.name = self.get_non_default_name(t0_player_ids_dict)
+ 
+    def check_name(self, t_name):
+        # credit goes to Jordak for the idea <3
+
+        verified_name = ""
+
+        if(self.spell_check == 'N'):
+            verified_name = t_name
+        else:
+            spell = SpellChecker()
+            spell.word_frequency.load_text_file('./TeamNameSpellCheckerCustomLanguage.txt')
+            namearr = t_name.split()
+            misspelled = spell.unknown(namearr)
+            corrections = {}
+
+            for word in misspelled:
+                correct = spell.correction(word)
+                corrections[word] = correct
+
+            for index, this_word in enumerate(namearr):
+                if this_word in corrections.keys():
+                    namearr[index] = corrections[this_word]
+
+            verified_name = " ".join(namearr)
+        return verified_name
+
+    def get_non_default_name(self):
+        team_name = ""
+        playerarr = []
+        for player_id in self.player_ids_dict:
+            playerarr.append(Player.get_player_name_by_id(player_id["id"]))
+        playerarr.sort()
+        team_name = "_".join(playerarr)
+
+        return team_name
 
     def look_for_team_index(team_name):
         index = -100
@@ -15,6 +63,7 @@ class Team:
                 index = Team.raw_teams.index(team)
                 break
         return index
+
 
     def add_team(t):
         if len(Team.raw_teams) == 0:

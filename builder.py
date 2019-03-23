@@ -1,7 +1,7 @@
 from match import Match
 from team import Team
 from player import Player
-from spellchecker import SpellChecker
+
 
 class Builder():
     def __init__(self, data, spell_check, playlist_filter):
@@ -17,69 +17,24 @@ class Builder():
             self.build_teams(match)
 
 
-    def check_name(self, t_name):
-        # credit goes to Jordak for the idea <3
-
-        verified_name = ""
-
-        if(self.spell_check == 'N'):
-            verified_name = t_name
-        else:
-            spell = SpellChecker()
-            spell.word_frequency.load_text_file('./TeamNameSpellCheckerCustomLanguage.txt')
-            namearr = t_name.split()
-            misspelled = spell.unknown(namearr)
-            corrections = {}
-
-            for word in misspelled:
-                correct = spell.correction(word)
-                corrections[word] = correct
-
-            for index, this_word in enumerate(namearr):
-                if this_word in corrections.keys():
-                    namearr[index] = corrections[this_word]
-
-            verified_name = " ".join(namearr)
-        return verified_name
+    
         
     def build_teams(self, match):
 
-        # general stats
-        t0_player_ids_dict = self.data["teams"][0]["playerIds"]
-        t0_score = self.data["teams"][0]["score"]
-        t0_win = 0
-        
-        # orange blue does not appear to get a node if names are not custom
-        try:
-            t0_name = self.check_name(self.data["teams"][0]["name"])
-        except KeyError:
-            t0_name = avoid_default_names(t0_player_ids_dict)
+        t0 = Team(self.data, match.map, 0, self.spell_check, self.playlist_filter)
+        update_player_team(t0.player_ids_dict, t0.name)
 
-        update_player_team(t0_player_ids_dict, t0_name)
+        t1 = Team(self.data, match.map, 1, self.spell_check, self.playlist_filter)
+        update_player_team(t1.player_ids_dict, t1.name)
 
-        t1_player_ids_dict = self.data["teams"][1]["playerIds"]
-        t1_score = self.data["teams"][1]["score"]
-        t1_win = 0
+        if t0.score > t1.score:
+            t0.win = 1
+            update_player_wins(t0.player_ids_dict)
+        elif t0.score < t1.score:
+            t1.win = 1
+            update_player_wins(t1.player_ids_dict)
 
-        # orange blue does not appear to get a node if names are not custom
-        try:
-            t1_name = self.check_name(self.data["teams"][1]["name"])
-        except KeyError:
-            t1_name = avoid_default_names(t1_player_ids_dict)
-
-        update_player_team(t1_player_ids_dict, t1_name)
-
-        if t0_score > t1_score:
-            t0_win = 1
-            update_player_wins(t0_player_ids_dict)
-        elif t0_score < t1_score:
-            t1_win = 1
-            update_player_wins(t1_player_ids_dict)
-
-        t0 = Team(t0_score, t0_name, t0_win, match.map)
-        t1 = Team(t1_score, t1_name, t1_win, match.map)
-
-        Team.add_team(t0)
+        Team.add_team(t0) # TODO can i make this a self.addteam?
         Team.add_team(t1)
 
     def build_players(self):
@@ -90,7 +45,7 @@ class Builder():
             p_id = player["id"]["id"]
             p_name = player["name"]
 
-            # (Verified by guys at SaltieRL/Claculated.gg/makers of carball)
+            # (Verified by guys at SaltieRL/Calculated.gg/makers of carball)
             # Carball wont output a key-value pair for something if its value as 0.
             # Python will throw a key error if you set something as a node that isnt there
             # Must handle the errors
@@ -393,15 +348,7 @@ class Builder():
                 Player.add_player(p)
 
 
-def avoid_default_names(player_ids_dict):
-    team_name = ""
-    playerarr = []
-    for player_id in player_ids_dict:
-        playerarr.append(Player.get_player_name_by_id(player_id["id"]))
-    playerarr.sort()
-    team_name = "_".join(playerarr)
 
-    return team_name
 
 def update_player_team(player_ids_dict, t_name):
     for player_id in player_ids_dict:
