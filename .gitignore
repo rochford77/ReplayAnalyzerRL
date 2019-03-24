@@ -1,3 +1,8 @@
+node_modules
 *.csv
-*.json
 *.replay
+TempJSON
+foo.json
+lastfile.json
+
+
