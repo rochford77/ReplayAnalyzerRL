@@ -3,8 +3,8 @@ from .team import Team
 
 
 class OutputHandler():
-    def __init__(self, folder_path):
-        self.folder_path = folder_path
+    def __init__(self, abs_path, folder_path):
+        self.folder_path = abs_path + folder_path
         self.create_team_output()
         self.create_player_output()
 

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <script src="../bridge/replayAnalyzerRun.js"></script>
+    <script src="../bridge/fileBrowser.js"></script>
+    <script src="../bridge/cmdManager.js"></script>
+    <script src="../bridge/clickListeners.js"></script>
+
+    <title>Replay Analyzer RL</title>
+  </head>
+  <body>
+
+    <div class="page-container">
+        <h1>Replay Analyzer RL</h1>
+        <div class="admin-buttons-container">
+          <input class="admin-button" id="install_req"type="button" value="Install Requirements"/>
+          <input class="admin-button" id="check_python" type="button" value="Check Python Version"/>
+        </div>
+        <div class="params-container">
+          <div>
+            <input type="button" value="Select Folder" id="select_folder"/>
+            <output id="FolderNameoutput"></output>
+          </div>
+        </div>
+        <div id="output-container"></div>
+        <div class="run-container">
+          <div>Spell Check <input id="spell_check" type="checkbox"/></div>
+          <input type="button" id="run_button" value="Run"></input>
+        </div>
+    </div>
+
+     <footer class="footer">
+      <div class="footer-text"> 2019 Ryan Rochford </div>
+     </footer>
+
+    <script>
+      // You can also require other files to run in this process
+      require('./renderer.js')
+    </script>
+    
+  </body>
+</html>
+
+
+

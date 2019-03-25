@@ -2,6 +2,7 @@ from .match import Match
 from .player import Player
 from .team import Team
 
+import sys
 
 class Builder():
     def __init__(self, data, spell_check, playlist_filter):
@@ -38,7 +39,8 @@ class Builder():
             p = Player(player_node)
 
             if p.isbot == True:
-                print("Robots are taking over!")
+                print("Engine: Robots are taking over!")
+                sys.stdout.flush()
             else:
                 p.add_player()
 

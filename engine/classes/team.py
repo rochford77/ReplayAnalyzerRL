@@ -31,7 +31,7 @@ class Team:
             verified_name = t_name
         else:
             spell = SpellChecker()
-            spell.word_frequency.load_text_file('./text_files/TeamNameSpellCheckerCustomLanguage.txt')
+            spell.word_frequency.load_text_file('E:/Source/ReplayAnalyzerRL/engine/text_files/TeamNameSpellCheckerCustomLanguage.txt')
             namearr = t_name.split()
             misspelled = spell.unknown(namearr)
             corrections = {}
