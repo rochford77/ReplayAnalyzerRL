@@ -15,6 +15,22 @@ function installRequirements(){
         div.appendChild(output)
         updateScroll(div)
     });
+
+    exec('npm install python-shell', function(error, stdout, stderr) {
+        var div = document.getElementById("output-container")
+        var output = document.createElement("output")
+        output.setAttribute('class', 'output-line-item')
+
+        if(stderr == ""){
+            output.innerHTML =  stdout 
+
+        }else{
+            output.innerHTML = "Error  " + stderr
+        }
+
+        div.appendChild(output)
+        updateScroll(div)
+    });
 }
 
 function checkPyVersion(){
