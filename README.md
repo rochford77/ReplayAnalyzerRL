@@ -8,13 +8,21 @@
 + Stats are grouped by player and team. 
 
 ### Requirements
-
+#### In order to launch the application
 + [python 3.6.2](https://www.python.org/downloads/release/python-362/)
++ [node.js](https://nodejs.org/en/)
+
+
+#### In order for the app to function properly
 + See requirements.txt
++ There is also an "install requirements" button in the electron wrapper (Python 3.6.2 required)
++ [NPM Python-Shell](https://www.npmjs.com/package/python-shell)
 
 `pip install -r requirements.txt`
 
-+ There is also an "install requirements" button in the electron wrapper (Python 3.6.2 required)
+`npm install python-shell'
+
+
 
 
 
