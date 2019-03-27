@@ -2,7 +2,7 @@
   "name": "ReplayAnalyzerRL",
   "version": "0.0.1",
   "description": "Electron wrapper for Replay Analyzer Rl",
-  "main": "main.js",
+  "main": "gui/main.js",
   "scripts": {
     "start": "electron .",
     "pack": "electron-builder --dir",

@@ -7,7 +7,7 @@ function analyze_replays(){
     var {PythonShell} = require("python-shell");
     var path = require("path")
 
-    var pypath = path.join(__dirname, "/engine/replayAnalyzer.py")
+    var pypath = path.join(__dirname, "/../engine/replayAnalyzer.py")
 
     var div1 = document.getElementById("output-container")
         var output1 = document.createElement("output")

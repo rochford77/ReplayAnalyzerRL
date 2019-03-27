@@ -2,7 +2,7 @@ function installRequirements(){
     var exec = require('child_process').exec;
     var path = require("path")
 
-    var requirements_path = path.join(__dirname, "/requirements.txt")
+    var requirements_path = path.join(__dirname, "/../requirements.txt")
 
 
     var div1 = document.getElementById("output-container")
