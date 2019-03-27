@@ -1,6 +1,18 @@
 function installRequirements(){
     var exec = require('child_process').exec;
-    exec('pip install -r ..\\requirements.txt ', function(error, stdout, stderr) {
+    var path = require("path")
+
+    var requirements_path = path.join(__dirname, "/requirements.txt")
+
+
+    var div1 = document.getElementById("output-container")
+        var output1 = document.createElement("output")
+        output1.setAttribute('class', 'output-line-item')
+        output1.innerHTML = requirements_path
+        div1.appendChild(output1)
+        updateScroll(div1)
+
+    exec('pip install -r ' + requirements_path, function(error, stdout, stderr) {
         var div = document.getElementById("output-container")
         var output = document.createElement("output")
         output.setAttribute('class', 'output-line-item')

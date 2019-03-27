@@ -1,7 +1,7 @@
 {
-  "name": "replayanalyzerrl",
+  "name": "ReplayAnalyzerRL",
   "version": "0.0.1",
-  "description": "electron wrapper for replayanalyzerrl",
+  "description": "Electron wrapper for Replay Analyzer Rl",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
@@ -24,11 +24,7 @@
   },
   "build": {
     "appId": "com.rochford77.replayanalyzerrl",
-    "files": [
-      "../engine/*",
-      "../engine/**/*",
-      "../engine/text_files/**/*",
-      "../engine/**/*"
-    ]
+    "productName": "Replay Analyzer RL",
+    "asar": false
   }
 }

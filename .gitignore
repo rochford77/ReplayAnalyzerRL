@@ -4,5 +4,6 @@ node_modules
 TempJSON
 foo.json
 lastfile.json
+dist
 
 
