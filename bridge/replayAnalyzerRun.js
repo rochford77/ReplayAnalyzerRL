@@ -13,10 +13,11 @@ function analyze_replays(){
     if(spell_check_box_value == true){
         check_spelling = "Y"
     }
-
+    
+    console.log(path.join(__dirname, "/../engine/"))
     var options = {
         scriptPath : path.join(__dirname, "/../engine/"),
-        args : ['-p', path.join(__dirname, "/../engine/"), '-f', fileFolder, '-s', check_spelling]
+        args : ['-a', fileFolder, '-s', check_spelling]
     }
 
     var pyshell = new PythonShell('replayAnalyzer.py', options);

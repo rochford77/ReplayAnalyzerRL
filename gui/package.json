@@ -4,7 +4,9 @@
   "description": "electron wrapper for replayanalyzerrl",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
   },
   "repository": "https://github.com/rochford77/ReplayAnalyzerRL",
   "keywords": [
@@ -13,11 +15,20 @@
     "python-shell"
   ],
   "author": "rochford77",
-  "license": "Apache License 2.0",
+  "license": "Apache-2.0",
   "devDependencies": {
     "electron": "^4.1.1"
   },
   "dependencies": {
     "python-shell": "^1.0.7"
+  },
+  "build": {
+    "appId": "com.rochford77.replayanalyzerrl",
+    "files": [
+      "../engine/*",
+      "../engine/**/*",
+      "../engine/text_files/**/*",
+      "../engine/**/*"
+    ]
   }
 }

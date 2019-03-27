@@ -21,14 +21,14 @@ from classes.player import Player
 from classes.team import Team
 
 
-def get_files(folder_path):
-    onlyfiles = [f for f in listdir(folder_path) if isfile(join(folder_path, f))]
+def get_files(abs_path):
+    onlyfiles = [f for f in listdir(abs_path) if isfile(join(abs_path, f))]
     return onlyfiles
 
-def parse_files(abs_path, folder_path, spell_check, playlist_filter):
+def parse_files(abs_path, spell_check, playlist_filter):
 
     temp_output_dir = abs_path + "TempJSON/"
-    replay_dir = abs_path + folder_path
+    replay_dir = abs_path
     print("Engine: verifying temp directory")
     sys.stdout.flush()
     print("Engine: parsing folder: " + replay_dir)
@@ -61,11 +61,8 @@ def main():
     sys.stdout.flush()
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("-p", "--abspath", dest="abs_path",
+    parser.add_argument("-a", "--abspath", dest="abs_path",
                                 help="please enter --folder pathToFolder", default="")
-
-    parser.add_argument("-f", "--folder", dest="folder_path",
-                                help="please enter --folder pathToFolder", required=True)
 
     parser.add_argument("-s", "--spell", dest="spell_check",
                                 help="enter Y or N for spell check", default="Y")
@@ -77,10 +74,10 @@ def main():
     args = parser.parse_args()
     print("Engine: Parsing Replay Files")
     sys.stdout.flush()
-    parse_files(args.abs_path, args.folder_path, args.spell_check, args.playlist_filter)
+    parse_files(args.abs_path, args.spell_check, args.playlist_filter)
     print("Engine: Creating Output")
     sys.stdout.flush()
-    OutputHandler(args.abs_path, args.folder_path)
+    OutputHandler(args.abs_path)
     print("Engine: Batch Job Finished")
     sys.stdout.flush()
 

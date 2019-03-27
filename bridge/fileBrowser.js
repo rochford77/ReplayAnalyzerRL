@@ -10,7 +10,6 @@ function open_dialog(){
             document.getElementById("run_button").disabled = true;
             return
         }else{
-            var patharr = folderPaths[0].split('\\')
             var div = document.getElementById("output-container")
             var output = document.createElement("output")
 
@@ -19,7 +18,7 @@ function open_dialog(){
             div.appendChild(output)
             updateScroll(div)
 
-            document.getElementById("FolderNameoutput").innerHTML = patharr[patharr.length-1]
+            document.getElementById("FolderNameoutput").innerHTML = folderPaths
             document.getElementById("run_button").disabled = false;
         }
     });;
