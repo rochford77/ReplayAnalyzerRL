@@ -27,7 +27,7 @@ def get_files(abs_path):
 
 def parse_files(abs_path, spell_check, playlist_filter):
 
-    temp_output_dir = abs_path + "TempJSON/"
+    temp_output_dir = abs_path + "/TempJSON/"
     replay_dir = abs_path
     print("Engine: verifying temp directory")
     sys.stdout.flush()
