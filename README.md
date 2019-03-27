@@ -4,7 +4,6 @@
 #### Structure
 + Engine: This folder holds all the python scripts. 
 Alone, this contains a python CLI that can be used with no other parts of the project
-+ GUI: This folder holds all the HTML/CSS elements for the electron wrapper
 + Bridge: This folder contains all the JavaScript connecting the Engine and GUI
 
 #### replayAnalyzer.py 
@@ -14,7 +13,7 @@ Alone, this contains a python CLI that can be used with no other parts of the pr
 + Stats are grouped by player and team. 
 
 ## Requirements
-#### In order to launch the application
+#### In order to build the application
 + [python 3.6.2](https://www.python.org/downloads/release/python-362/)
 + [node.js](https://nodejs.org/en/)
 
