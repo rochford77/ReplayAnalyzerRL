@@ -1,13 +1,19 @@
 
-### About
+## About
+
+#### Structure
++ Engine: This folder holds all the python scripts. 
+Alone, this contains a python CLI that can be used with no other parts of the project
++ GUI: This folder holds all the HTML/CSS elements for the electron wrapper
++ Bridge: This folder contains all the JavaScript connecting the Engine and GUI
 
 #### replayAnalyzer.py 
 
-+ wrapper for [carball](https://github.com/SaltieRL/carball) 
++ Wrapper for [carball](https://github.com/SaltieRL/carball) 
 + This feeds carball in batches of replay files and outputs advanced stats 
 + Stats are grouped by player and team. 
 
-### Requirements
+## Requirements
 #### In order to launch the application
 + [python 3.6.2](https://www.python.org/downloads/release/python-362/)
 + [node.js](https://nodejs.org/en/)
@@ -20,13 +26,9 @@
 
 `pip install -r requirements.txt`
 
-`npm install python-shell'
+`npm install python-shell`
 
-
-
-
-
-### Usage
+## Usage
 + If you want to use the python CLI, cd into the engine and:
 
 `python ./replayAnalyzer.py --folder --spell --playlist`
@@ -35,7 +37,7 @@
 
 `npm start`
 
-### SpellChecker
+#### SpellChecker
 + The file TeamNameSpellCheckerCustomLanguage.txt can be used to add/prioritize words
 + This is great for ensuring your leagues team names are the first resluts in the list
 + Helps avoid false positives
