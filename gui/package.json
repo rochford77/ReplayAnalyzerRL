@@ -1,21 +1,19 @@
 {
-  "name": "electron-quick-start",
-  "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "name": "replayanalyzerrl",
+  "version": "0.0.1",
+  "description": "electron wrapper for replayanalyzerrl",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
   },
-  "repository": "https://github.com/electron/electron-quick-start",
+  "repository": "https://github.com/rochford77/ReplayAnalyzerRL",
   "keywords": [
     "Electron",
-    "quick",
-    "start",
-    "tutorial",
-    "demo"
+    "python",
+    "python-shell"
   ],
-  "author": "GitHub",
-  "license": "CC0-1.0",
+  "author": "rochford77",
+  "license": "Apache License 2.0",
   "devDependencies": {
     "electron": "^4.1.1"
   },
