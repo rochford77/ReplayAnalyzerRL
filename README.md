@@ -47,4 +47,4 @@ Alone, this contains a python CLI that can be used with no other parts of the pr
 
 #### Flow of app (rattletrap is a carball dependency):
 
-![alt text](https://github.com/rochford77/ReplayAnalyzerRL/blob/master/extras/flow.png)
+![FlowImg](https://github.com/rochford77/ReplayAnalyzerRL/blob/master/extras/flow.png)
