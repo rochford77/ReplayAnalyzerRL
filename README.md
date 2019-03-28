@@ -4,6 +4,7 @@
 #### Structure
 + Engine: This folder holds all the python scripts. 
 Alone, this contains a python CLI that can be used with no other parts of the project
++ GUI: This contains files specific to the Electron front-end
 + Bridge: This folder contains all the JavaScript connecting the Engine and GUI
 
 #### replayAnalyzer.py 
@@ -43,3 +44,6 @@ Alone, this contains a python CLI that can be used with no other parts of the pr
 + No delimiter needed, just spaces between words
 + This is ignored when not using spell checker
 + 100% Optional
+
+####Flow of app (rattletrap is a carball dependency):
+![alt text](https://github.com/rochford77/ReplayAnalyzerRL/blob/master/extras/flow.png)
