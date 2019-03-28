@@ -45,5 +45,6 @@ Alone, this contains a python CLI that can be used with no other parts of the pr
 + This is ignored when not using spell checker
 + 100% Optional
 
-####Flow of app (rattletrap is a carball dependency):
+#### Flow of app (rattletrap is a carball dependency):
+
 ![alt text](https://github.com/rochford77/ReplayAnalyzerRL/blob/master/extras/flow.png)
