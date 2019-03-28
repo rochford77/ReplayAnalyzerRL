@@ -3,6 +3,7 @@ window.onload=function(){
     const { dialog } = require('electron')
 
     document.getElementById("run_button").disabled = true;
+
     document.getElementById("check_python").addEventListener("click", function(){
         try{
             checkPyVersion()
@@ -10,9 +11,6 @@ window.onload=function(){
         catch(e){
             dialog.showMessageBox(e.message)
         }
-
-
-        
     });
 
     document.getElementById("run_button").addEventListener("click", function(){
@@ -22,11 +20,9 @@ window.onload=function(){
         catch(e){
             dialog.showMessageBox(e.message)
         }
-        
     });
 
     document.getElementById("install_req").addEventListener("click", function(){
-        
         try{
             installRequirements()
         }
@@ -36,7 +32,6 @@ window.onload=function(){
     });
     
     document.getElementById("select_folder").addEventListener("click", function(){
-        
         try{
             open_dialog()
         }
