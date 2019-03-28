@@ -5,20 +5,20 @@ function analyze_replays(){
 
     var {PythonShell} = require("python-shell");
     var path = require("path")
-
     var pypath = path.join(__dirname, "/../engine/replayAnalyzer.py")
 
-    writeOutput(pypath)
-
+    var check_spelling = "N"
     var fileFolder = document.getElementById("FolderNameoutput").value
     var spell_check_box_value = document.getElementById("spell_check").checked
-    var check_spelling = "N"
+    var disable_teams_enable_single_player = document.getElementById("disable_teams").checked
 
     if(spell_check_box_value == true){
         check_spelling = "Y"
     }
+    writeOutput(pypath)
+
     var options = {
-        args : ['-a', fileFolder, '-s', check_spelling]
+        args : ['-a', fileFolder, '-s', check_spelling, '-m', disable_teams_enable_single_player]
     }
     var pyshell = new PythonShell(pypath, options);
     pyshell.on('message', function (message) {

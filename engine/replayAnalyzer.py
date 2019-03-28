@@ -25,7 +25,7 @@ def get_files(abs_path):
     onlyfiles = [f for f in listdir(abs_path) if isfile(join(abs_path, f))]
     return onlyfiles
 
-def parse_files(abs_path, spell_check, playlist_filter):
+def parse_files(abs_path, spell_check, playlist_filter, single_player):
 
     temp_output_dir = abs_path + "/TempJSON/"
     replay_dir = abs_path
@@ -33,7 +33,7 @@ def parse_files(abs_path, spell_check, playlist_filter):
     sys.stdout.flush()
     print("Engine: parsing folder: " + replay_dir)
     for file in get_files(replay_dir):
-        print("Analyzing replay: " + file)
+        print("Engine: Analyzing replay: " + file)
         sys.stdout.flush()
         _json = carball.decompile_replay(replay_dir + "/" + file, 
                                         output_path=temp_output_dir +'foo.json', 
@@ -50,7 +50,7 @@ def parse_files(abs_path, spell_check, playlist_filter):
         f.close()
         print("Engine: sending data from " + file +" to Builder")
         sys.stdout.flush()
-        Builder(data, spell_check, playlist_filter)
+        Builder(data, spell_check, playlist_filter, single_player)
 
 def verify_temp_directory(path):
     if not os.path.exists(path):
@@ -62,19 +62,26 @@ def main():
     parser = argparse.ArgumentParser()
 
     parser.add_argument("-a", "--abspath", dest="abs_path",
-                                help="please enter --folder pathToFolder", default="")
+                                help="please enter --folder pathToFolder", required=True)
 
     parser.add_argument("-s", "--spell", dest="spell_check",
                                 help="enter Y or N for spell check", default="Y")
 
     parser.add_argument("-l", "--playlist", dest="playlist_filter",
         help="enter the name of the playlist to filter for", default = None)
-
+    
+    parser.add_argument("-m", "--mode", dest="is_single_player_mode",
+        help="enter True for single player mode or leave blank or False for team mode", default = False)
 
     args = parser.parse_args()
+    is_single_player = False
+
+    if (args.is_single_player_mode == "true" or args.is_single_player_mode == True):
+        is_single_player = True
+
     print("Engine: Parsing Replay Files")
     sys.stdout.flush()
-    parse_files(args.abs_path, args.spell_check, args.playlist_filter)
+    parse_files(args.abs_path, args.spell_check, args.playlist_filter, is_single_player)
     print("Engine: Creating Output")
     sys.stdout.flush()
     OutputHandler(args.abs_path)

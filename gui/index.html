@@ -14,21 +14,22 @@
   <body>
 
     <div class="page-container">
-        <h1>Replay Analyzer RL</h1>
         <div class="admin-buttons-container">
-          <input class="admin-button" id="install_req"type="button" value="Install Requirements"/>
-          <input class="admin-button" id="check_python" type="button" value="Check Python Version"/>
+          <input class="admin-button button" id="install_req"type="button" value="Install Requirements"/>
+          <input class="admin-button button" id="check_python" type="button" value="Check Python Version"/>
         </div>
         <div class="params-container">
           <div>
-            <input type="button" value="Select Folder" id="select_folder"/>
+            
             <output id="FolderNameoutput"></output>
           </div>
         </div>
         <div id="output-container"></div>
         <div class="run-container">
           <div>Spell Check <input id="spell_check" type="checkbox"/></div>
-          <input type="button" id="run_button" value="Run"></input>
+          <div>Disable Teams <input id="disable_teams" type="checkbox"/></div>
+          <div><input type="button" id="select_folder" class="button" value="Select Folder"/></div>
+          <div><input type="button" id="run_button" class="button" value="Run"></input></div>
         </div>
     </div>
 

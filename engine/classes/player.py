@@ -2,7 +2,7 @@ class Player:
     raw_players = []
 
     def __init__(self, node):
-        self.team_name = ""
+        self.team_name = node["name"] # when team mode is enabled, this is updated, otherwise they are their own team.
         self.games = 1
         self.wins = 0
         self.id = node["id"]["id"]

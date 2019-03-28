@@ -16,6 +16,7 @@ title{
     width: 95vw;
     text-align: center;
     border-radius: 5px;
+    margin-top: 1em;
 
 
 }
@@ -30,10 +31,14 @@ title{
     /* text-align: left; */
 }
 
+.button{
+    padding: 5px;
+}
 
 .admin-button{
     margin-left: 10px;
     margin-right: 10px;
+    margin-top: 2em;
 }
 .admin-buttons-container{
     display: inline-block;
@@ -76,3 +81,11 @@ title{
     padding: 10px;
 }
 
+
+#select_folder{
+    margin-top: 5px;
+}
+
+#run_button{
+    margin-top: 5px;
+}
