@@ -18,34 +18,32 @@ class Player:
             self.isbot = node["isBot"]
         except KeyError:
             self.isbot = False
-
         try:
             self.goals = node["goals"]
         except KeyError:
             self.goals = 0
-
         try:
             self.assists = node["assists"]
         except KeyError:
             self.assists = 0
-
         try:
             self.saves = node["saves"]
         except KeyError:
             self.saves = 0
-
         try:
             self.shots = node["shots"]
         except KeyError:
             self.shots = 0
-
         try:
             self.score = node["score"]
         except KeyError:
             self.score = 0
 
         # Boost Stats
-        boost_node = node["stats"]["boost"]
+        try:
+            boost_node = node["stats"]["boost"]
+        except KeyError:
+            boost_node = {}
         try:
             self.boostUseage = boost_node["boostUsage"]
         except KeyError:
@@ -97,24 +95,28 @@ class Player:
             self.averageBoostLevel = 0.00
 
         # Distance Stats
-        distance_node = node["stats"]["distance"]
+        try:
+            distance_node = node["stats"]["distance"]
+        except KeyError:
+            distance_node = {}
         try:
             self.ballHitForward = distance_node["ballHitForward"]
         except KeyError:
             self.ballHitForward  = 0.00
-
         try:
             self.timeClosestToBall = distance_node["timeClosestToBall"]
         except KeyError:
             self.timeClosestToBall = 0.00
-
         try:
             self.timeFurthestFromBall = distance_node["timeFurthestFromBall"]
         except KeyError:
             self.timeFurthestFromBall = 0.00
 
         # Possession Stats
-        possession_node = node["stats"]["possession"]
+        try:
+            possession_node = node["stats"]["possession"]
+        except KeyError:
+            possession_node = {}
         try:
             self.possessionTime = possession_node["possessionTime"]
         except KeyError:
@@ -141,7 +143,10 @@ class Player:
             self.wonTurnovers = 0
 
         # Positional Stats
-        position_node = node["stats"]["positionalTendencies"]
+        try:
+            position_node = node["stats"]["positionalTendencies"]
+        except KeyError:
+            position_node = {}
         try:
             self.timeOnGround = position_node["timeOnGround"]
         except KeyError:
@@ -203,7 +208,10 @@ class Player:
             self.timeInCorner = 0.00
 
         # average stats
-        avg_node = node["stats"]["averages"]
+        try:
+            avg_node = node["stats"]["averages"]
+        except KeyError:
+            avg_node = {}
         try:
             self.averageSpeed = avg_node["averageSpeed"]
         except KeyError:
@@ -218,7 +226,10 @@ class Player:
             self.averageDistanceFromCenter = 0.00
 
         # hit stats
-        hit_node = node["stats"]["hitCounts"]
+        try:
+            hit_node = node["stats"]["hitCounts"]
+        except KeyError:
+            hit_node = {}
         try:
             self.totalHits = hit_node["totalHits"]
         except KeyError:
@@ -245,7 +256,10 @@ class Player:
             self.totalAerials = 0
 
         # speed
-        speed_node = node["stats"]["speed"]
+        try:
+            speed_node = node["stats"]["speed"]
+        except KeyError:
+            speed_node = {}
         try:
             self.timeAtSlowSpeed = speed_node["timeAtSlowSpeed"]
         except KeyError:
@@ -298,7 +312,7 @@ class Player:
                 Player.raw_players[matched_index].goals                     = Player.raw_players[matched_index].goals                       + self.goals
                 Player.raw_players[matched_index].assists                   = Player.raw_players[matched_index].assists                     + self.assists
                 Player.raw_players[matched_index].saves                     = Player.raw_players[matched_index].saves                       + self.saves
-                Player.raw_players[matched_index].goshotsals                = Player.raw_players[matched_index].shots                       + self.shots
+                Player.raw_players[matched_index].shots                = Player.raw_players[matched_index].shots                       + self.shots
                 Player.raw_players[matched_index].score                     = Player.raw_players[matched_index].score                       + self.score
                 Player.raw_players[matched_index].games                     = Player.raw_players[matched_index].games                       + self.games
                 Player.raw_players[matched_index].boostUseage               = Player.raw_players[matched_index].boostUseage                 + self.boostUseage
