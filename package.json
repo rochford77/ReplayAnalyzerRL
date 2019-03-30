@@ -1,6 +1,6 @@
 {
   "name": "ReplayAnalyzerRL",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "Electron wrapper for Replay Analyzer Rl",
   "main": "gui/main.js",
   "scripts": {
