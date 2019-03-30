@@ -3,6 +3,7 @@ window.onload=function(){
     const { dialog } = require('electron')
 
     document.getElementById("run_button").disabled = true;
+    document.getElementById("playlist_filter_select").disabled = true
 
     document.getElementById("check_python").addEventListener("click", function(){
         try{
@@ -28,6 +29,15 @@ window.onload=function(){
         }
         catch(e){
             dialog.showMessageBox(e.message)
+        }
+    });
+
+    document.getElementById("playlist_filter_check").addEventListener("click", function(){
+        var select_dropdown = document.getElementById("playlist_filter_select")
+        if (select_dropdown.disabled == true){
+            document.getElementById("playlist_filter_select").disabled = false
+        }else{
+            document.getElementById("playlist_filter_select").disabled = true
         }
     });
     

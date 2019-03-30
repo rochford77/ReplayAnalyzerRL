@@ -24,11 +24,37 @@
           </div>
         </div>
         <div id="output-container"></div>
-        <div class="run-container">
-          <div>Spell Check <input id="spell_check" type="checkbox"/></div>
-          <div>Disable Teams <input id="disable_teams" type="checkbox"/></div>
-          <div><input type="button" id="select_folder" class="button" value="Select Folder"/></div>
-          <div><input type="button" id="run_button" class="button" value="Run"></input></div>
+        <div class="control-container">
+          <div class="run-container-left">
+            <div id="playlist_text">Playlist Filter:</div>
+            <div>
+              <input id="playlist_filter_check" type="checkbox"/>
+                <select id="playlist_filter_select">
+                  <option value="UNRANKED_DUELS">Unranked Duels</option>
+                  <option value="UNRANKED_DOUBLES">Unranked Doubles</option>
+                  <option value="UNRANKED_STANDARD">Unranked Standard</option>
+                  <option value="UNRANKED_CHAOS">Unranked Chaos</option>
+                  <option value="CUSTOM_LOBBY">Custom</option>
+                  <option value="OFFLINE">Offline</option><!--need to check this value-->
+                  <option value="DUELS">Duels</option>
+                  <option value="DOUBLES">Doubles</option>
+                  <option value="SOLO_STANDARD">Solo Standard</option>
+                  <option value="STANDARD">Standard</option>
+                  <option value="HOOPS">Hoops</option><!--need to check this value-->
+                  <option value="RUMBLE">Rumble</option><!--need to check this value-->
+                  <option value="DROPSHOT">Dropshot</option><!--need to check this value-->
+                  <option value="SNOW_DAY">Snow Day</option><!--need to check this value-->
+              </select> 
+            
+            </div>
+            
+          </div>
+          <div class="run-container-right">
+            <div>Spell Check <input id="spell_check" type="checkbox"/></div>
+            <div>Disable Teams <input id="disable_teams" type="checkbox"/></div>
+            <div><input type="button" id="select_folder" class="button" value="Select Folder"/></div>
+            <div><input type="button" id="run_button" class="button" value="Run"></input></div>
+          </div>
         </div>
     </div>
     
