@@ -18,7 +18,7 @@ class OutputHandler():
             + "TOTAL AERIALS,T AT SLOW SPEED,T AT SUPERSONIC,T AT BOOST SPEED\n"
         )
 
-        self.write_output_file(self.folder_path + "player_data.csv", player_header_data, "w+")
+        self.write_output_file(self.folder_path + "/" + "player_data.csv", player_header_data, "w+")
 
         for thePlayer in Player.raw_players:
             player_data = (str(thePlayer.id)

@@ -63,7 +63,7 @@ title{
 }
 #FolderNameoutput{
     background-color: white;
-    margin-left: 5em;
+    display: none;
 }
 
 #output-container{
