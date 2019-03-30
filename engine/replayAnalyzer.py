@@ -23,21 +23,27 @@ from classes.team import Team
 
 def get_files(abs_path):
     onlyfiles = [f for f in listdir(abs_path) if isfile(join(abs_path, f))]
-    return onlyfiles
+    onlyReplayFiles = []
+    print(onlyfiles)
+    for replay_file in onlyfiles:
+        if replay_file.endswith('.replay'):
+            onlyReplayFiles.append(replay_file)
+    print(onlyReplayFiles)
+    return onlyReplayFiles
 
 def parse_files(abs_path, spell_check, playlist_filter, single_player):
-
     temp_output_dir = abs_path + "/TempJSON/"
     replay_dir = abs_path
     print("Engine: verifying temp directory")
     sys.stdout.flush()
     print("Engine: parsing folder: " + replay_dir)
-    for file in get_files(replay_dir):
-        print("Engine: Analyzing replay: " + file)
+
+    for replay_file in get_files(replay_dir):
+        print("Engine: Analyzing replay: " + replay_file)
         sys.stdout.flush()
-        _json = carball.decompile_replay(replay_dir + "/" + file, 
-                                        output_path=temp_output_dir +'foo.json', 
-                                        overwrite=True)
+        _json = carball.decompile_replay(replay_dir + "/" + replay_file, 
+                    output_path=temp_output_dir +'decompiled_replay.json', 
+                    overwrite=True)
         game = Game()
         game.initialize(loaded_json=_json)
         analysis = AnalysisManager(game)
@@ -48,7 +54,7 @@ def parse_files(abs_path, spell_check, playlist_filter, single_player):
         f = open(temp_output_dir + "lastfile.json", "w+")
         f.write(raw_json)
         f.close()
-        print("Engine: sending data from " + file +" to Builder")
+        print("Engine: sending data from " + replay_file +" to Builder")
         sys.stdout.flush()
         Builder(data, spell_check, playlist_filter, single_player)
 
@@ -62,16 +68,16 @@ def main():
     parser = argparse.ArgumentParser()
 
     parser.add_argument("-a", "--abspath", dest="abs_path",
-                                help="please enter --folder pathToFolder", required=True)
+                help="please enter --folder pathToFolder", required=True)
 
     parser.add_argument("-s", "--spell", dest="spell_check",
-                                help="enter Y or N for spell check", default="Y")
+                help="enter Y or N for spell check", default="Y")
 
     parser.add_argument("-l", "--playlist", dest="playlist_filter",
-        help="enter the name of the playlist to filter for", default = None)
+                help="enter the name of the playlist to filter for", default = None)
     
     parser.add_argument("-m", "--mode", dest="is_single_player_mode",
-        help="enter True for single player mode or leave blank or False for team mode", default = False)
+                help="enter True for single player mode or leave blank or False for team mode", default = False)
 
     args = parser.parse_args()
     is_single_player = False
