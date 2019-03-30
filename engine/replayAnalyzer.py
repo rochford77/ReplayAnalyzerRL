@@ -24,11 +24,9 @@ from classes.team import Team
 def get_files(abs_path):
     onlyfiles = [f for f in listdir(abs_path) if isfile(join(abs_path, f))]
     onlyReplayFiles = []
-    print(onlyfiles)
     for replay_file in onlyfiles:
         if replay_file.endswith('.replay'):
             onlyReplayFiles.append(replay_file)
-    print(onlyReplayFiles)
     return onlyReplayFiles
 
 def parse_files(abs_path, spell_check, playlist_filter, single_player):
