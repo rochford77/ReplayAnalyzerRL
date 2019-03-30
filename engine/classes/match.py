@@ -7,6 +7,7 @@ class Match:
         self.guid = data["gameMetadata"]["matchGuid"]
         self.playlist = data["gameMetadata"]["playlist"]
         self.valid_match_created = self.check_valid_match(playlist_filter)
+        print(data["gameMetadata"]["playlist"])
 
 
     def look_for_match_index(self):

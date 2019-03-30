@@ -35,6 +35,7 @@ function analyze_replays(){
     });
     pyshell.end(function (err) {
         if (err){
+            writeOutput(err)
             throw err;
         };
         writeOutput('finished');
