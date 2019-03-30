@@ -75,12 +75,12 @@ class OutputHandler():
                 + "," + str(thePlayer.timeAtBoostSpeed)
                 +"\n"
             )
-            self.write_output_file(self.folder_path + "player_data.csv", player_data, "a")
+            self.write_output_file(self.folder_path + "/" + "player_data.csv", player_data, "a")
 
     def create_team_output(self):
         team_header_data = ("NAME,SCORE,WINS,GAMES\n")
 
-        self.write_output_file(self.folder_path + "team_data.csv", team_header_data, "w+")
+        self.write_output_file(self.folder_path + "/" + "team_data.csv", team_header_data, "w+")
 
         for theTeam in Team.raw_teams:
             team_data = (str(theTeam.name)
@@ -90,7 +90,7 @@ class OutputHandler():
                 + "," + '_'.join(theTeam.maps_played)
                 +"\n"
             )
-            self.write_output_file(self.folder_path + "team_data.csv", team_data, "a")
+            self.write_output_file(self.folder_path + "/" + "team_data.csv", team_data, "a")
 
     
     def write_output_file(self, filename, data, permissions):
