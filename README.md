@@ -31,11 +31,13 @@ Alone, this contains a python CLI that can be used with no other parts of the pr
 ## Usage
 + If you want to use the python CLI, cd into the engine and:
 
-`python ./replayAnalyzer.py --folder --spell --playlist`
+`python ./replayAnalyzer.py --abspath --spell --playlist --mode`
 
 + If you want to use the GUI, have node installed, cd into GUI, and:
 
 `npm start`
+
++ If you are simply using the .exe installer, have python 3.6.2 or later installed and click the "install requirements" button.
 
 #### SpellChecker
 + The file TeamNameSpellCheckerCustomLanguage.txt can be used to add/prioritize words
