@@ -17,7 +17,7 @@
   "author": "rochford77",
   "license": "Apache-2.0",
   "devDependencies": {
-    "electron": "^4.1.1"
+    "electron": "^9.1.0"
   },
   "dependencies": {
     "python-shell": "^1.0.7"
